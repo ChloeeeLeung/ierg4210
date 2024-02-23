@@ -1,4 +1,3 @@
-import "@/styles/globals.css";
 import {
 	BrowserRouter as Router,
 	Routes,
@@ -7,6 +6,7 @@ import {
 } from "react-router-dom";
 import Home from "./index.js";
 import Product from "./product.js";
+import React, { useEffect, useState } from "react";
 
 const productList = [
 	{ id: 'decoration'},
@@ -16,7 +16,12 @@ const productList = [
 ];
 
 export default function App() {
-
+  const [isServer, setIsServer] = useState(true);
+  useEffect(() => {
+    setIsServer(false);
+  }, []);
+  if (isServer) return null;
+	
   const hierarchicalHomeMenu = [
 		{ name: 'Home', path: '/' },
 	];
