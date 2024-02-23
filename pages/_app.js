@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import Home from "./index.js";
 import Product from "./product.js";
+import Admin from "./admin.js";
+import "../styles/globals.css";
 
 const productList = [
   { id: 'decoration' },
@@ -88,6 +90,11 @@ export default function App() {
             />
           ))}
           <Route path="*" element={<Navigate to="/" />} />
+          <Route
+            exact
+            path="/admin"
+            element={<Admin />}
+          />
         </Routes>
       </Router>
     </>

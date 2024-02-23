@@ -2,7 +2,7 @@ import { Link, useLocation } from "react-router-dom";
 import React from "react";
 import styles from "../styles/Home.module.css";
 import ProductList from './productList.js';
-import logo from './assets/productCandle1.jpg';
+import logo from './assets/logo.jpg';
 import Image from "next/image";
 
 export default function Home({ hierarchicalMenu }) {
@@ -28,7 +28,7 @@ export default function Home({ hierarchicalMenu }) {
               <input type="number" className={styles.QuantityInput} />
               <h6 className={styles.LeftText}>$ 150</h6>
             </div>
-            <hr className='Line' />
+            <hr className={styles.Line}/>
             <button className={styles.Checkout}>Checkout</button>
           </div>
         </nav>
