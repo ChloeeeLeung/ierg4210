@@ -1,0 +1,76 @@
+.App {
+    text-align: center;
+}
+
+.AppLogo {
+    height: 13vh;
+    width: 13vh;
+    border-radius: 50%;
+    margin-right: 5%;
+}
+
+.AppHeader {
+    background-color: #886F68;
+    min-height: 10vh;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: #3D2C2E;
+}
+
+.AppBody {
+    background-color: #F5EDF0;
+    min-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: calc(10px + 2vmin);
+}
+
+.Title {
+    color: #3D2C2E;
+    text-decoration: underline;
+}
+
+.Select {
+    width: 167px;
+}
+
+.LabelContainer {
+    align-items: stretch;
+}
+
+.Label {
+    text-align: left;
+    width: 150px;
+    display: inline-block;
+    font-size: small;
+    color: #3D2C2E;
+    font-weight: 600;
+}
+
+.ImgLabel {
+    width: 500px;
+    height: 300px;
+    padding: 30px;
+    background: #F5EDF0;
+    text-align: center;
+    border-radius: 20px;
+}
+
+.ImageButton {
+    width: 167px;
+    font-size: x-small;
+}
+
+.Submit {
+    margin: 10px;
+    background-color: #886F68;
+    color: white;
+    border-radius: 5px;
+    border: 1;
+    border-color: white;
+    padding: 3px 40px;
+}
