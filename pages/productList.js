@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useLocation  } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import styles from "../styles/ProductList.module.css";
 import productCandle1 from './assets/productCandle1.jpg';
 import productCandle2 from './assets/productCandle2.jpg';
@@ -21,9 +21,9 @@ export default function ProductList() {
       { name: 'Candle Container 1', price: '$150', image: productCandle1, pathname: location.pathname, inventory: 10 },
       { name: 'Candle Container 2', price: '$130', image: productCandle2, pathname: location.pathname, inventory: 5 },
       { name: 'Candle Container 3', price: '$120', image: productCandle1, pathname: location.pathname, inventory: 6 },
-      { name: 'Candle Container 4', price: '$110', image: productCandle2, pathname: location.pathname, inventory: 2  },
-      { name: 'Candle Container 5', price: '$100', image: productCandle1, pathname: location.pathname, inventory: 1  },
-      { name: 'Candle Container 6', price: '$140', image: productCandle2, pathname: location.pathname, inventory: 1  },
+      { name: 'Candle Container 4', price: '$110', image: productCandle2, pathname: location.pathname, inventory: 2 },
+      { name: 'Candle Container 5', price: '$100', image: productCandle1, pathname: location.pathname, inventory: 1 },
+      { name: 'Candle Container 6', price: '$140', image: productCandle2, pathname: location.pathname, inventory: 1 },
     ];
   } else if (location.pathname === '/tableware') {
     productList = [

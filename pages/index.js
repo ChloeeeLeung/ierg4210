@@ -6,7 +6,8 @@ import logo from './assets/productCandle1.jpg';
 import Image from "next/image";
 
 export default function Home({ hierarchicalMenu }) {
-const location = useLocation();
+  const location = useLocation();
+
   return (
     <div className={styles.App}>
       <header className={styles.AppHeader}>
@@ -14,32 +15,32 @@ const location = useLocation();
         <h4>CERAMIC WORLD</h4>
       </header>
       <body className={styles.AppBody}>
-        <nav className={styles.ShoppingList }>
-          <h6 className={styles.ShoppingList }>Shopping List</h6>
-          <div className={styles.Submenu }>
-            <div className={ styles.RowContainer}>
-              <h6 className={ styles.LeftText}>Candle Container</h6>
+        <nav className={styles.ShoppingList}>
+          <h6 className={styles.ShoppingList}>Shopping List</h6>
+          <div className={styles.Submenu}>
+            <div className={styles.RowContainer}>
+              <h6 className={styles.LeftText}>Candle Container</h6>
               <input type="number" className={styles.QuantityInput} />
-              <h6 className={ styles.LeftText}>$ 150</h6>
+              <h6 className={styles.LeftText}>$ 150</h6>
             </div>
-             <div className={styles.RowContainer}>
-              <h6 className={ styles.LeftText}>Candle Container</h6>
+            <div className={styles.RowContainer}>
+              <h6 className={styles.LeftText}>Candle Container</h6>
               <input type="number" className={styles.QuantityInput} />
-              <h6 className={ styles.LeftText}>$ 150</h6>
+              <h6 className={styles.LeftText}>$ 150</h6>
             </div>
             <hr className='Line' />
             <button className={styles.Checkout}>Checkout</button>
           </div>
         </nav>
-         <nav className={styles.Hierarchical}>
-            {hierarchicalMenu.map((item, index) => (
+        <nav className={styles.Hierarchical}>
+          {hierarchicalMenu.map((item, index) => (
             <React.Fragment key={item.path}>
-                {index !== 0 && ' > '}
-                <Link to={item.path} className={location.pathname === item.path ? 'active' : ''}>
+              {index !== 0 && ' > '}
+              <Link to={item.path} className={location.pathname === item.path ? 'active' : ''}>
                 {item.name}
-                </Link>
+              </Link>
             </React.Fragment>
-            ))}
+          ))}
         </nav>
         <div className={styles.Row}>
           <Link to="/decoration">
@@ -55,7 +56,7 @@ const location = useLocation();
             <button className={styles.CatagoriesButton}>Cup</button>
           </Link>
         </div>
-        <ProductList/>
+        <ProductList />
       </body>
     </div>
   );
