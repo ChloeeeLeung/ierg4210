@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import React from "react";
+import React, { useState, useEffect } from 'react';
 import styles from "../styles/Home.module.css";
 import ProductList from './productList.js';
 import logo from './assets/logo.jpg';
@@ -7,6 +7,24 @@ import Image from "next/image";
 
 export default function Home({ hierarchicalMenu }) {
   const location = useLocation();
+
+  const [categoryAll, setCategoryAll] = useState([]);
+
+   useEffect(() => {
+    fetch('/api/category')
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setCategoryAll(data.categoryAll);
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+      });
+   }, []); 
 
   return (
     <div className={styles.App}>
@@ -43,7 +61,12 @@ export default function Home({ hierarchicalMenu }) {
           ))}
         </nav>
         <div className={styles.Row}>
-          <Link to="/decoration">
+          {categoryAll.map((category) => (
+            <Link to={`/${category.name}`}>
+              <button className={styles.CatagoriesButton}>{category.name}</button>
+            </Link>
+            ))}
+          {/* <Link to="/decoration">
             <button className={styles.CatagoriesButton}>Decoration</button>
           </Link>
           <Link to="/tableware">
@@ -54,7 +77,7 @@ export default function Home({ hierarchicalMenu }) {
           </Link>
           <Link to="/cup">
             <button className={styles.CatagoriesButton}>Cup</button>
-          </Link>
+          </Link> */}
         </div>
         <ProductList />
       </body>

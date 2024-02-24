@@ -14,9 +14,23 @@ const productList = [
 
 export default function App() {
   const [isServer, setIsServer] = useState(true);
+  const [categoryAll, setCategoryAll] = useState([]);
 
   useEffect(() => {
     setIsServer(false);
+    fetch('/api/category')
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setCategoryAll(data.categoryAll);
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+      });
   }, []);
 
   if (isServer) return null;
@@ -54,23 +68,25 @@ export default function App() {
             path="/"
             element={<Home hierarchicalMenu={hierarchicalHomeMenu} />}
           />
+          {categoryAll.map((category) => (
+            <Route
+              path={`${category.name}`}
+              element={<Home hierarchicalMenu={hierarchicalDecorationMenu} />}
+            />
+          ))}
           <Route
-            exact
             path="/decoration"
             element={<Home hierarchicalMenu={hierarchicalDecorationMenu} />}
           />
           <Route
-            exact
             path="/tableware"
             element={<Home hierarchicalMenu={hierarchicalTablewareMenu} />}
           />
           <Route
-            exact
             path="/vase"
             element={<Home hierarchicalMenu={hierarchicalVaseMenu} />}
           />
           <Route
-            exact
             path="/cup"
             element={<Home hierarchicalMenu={hierarchicalCupMenu} />}
           />
