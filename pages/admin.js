@@ -9,15 +9,50 @@ export default function Admin() {
   const [delProduct, setDelProduct] = useState('');
   const [oldCategory, setOldCategory] = useState('');
   const [updateCategory, setUpdateCategory] = useState('');
+  const [oldProduct, setOldProduct] = useState('');
+  const [updateDescription, setUpdateDescription] = useState('');
+  const [updateItem, setUpdateItem] = useState('');
+  const [updateName, setUpdateName] = useState('');
+  const [updatePrice, setUpdatePrice] = useState('');
+  const [updateInventory, setUpdateInventory] = useState('');
+  const [updateImage, setUpdateImage] = useState('');
 
   const handleOldCategoryChange = (event) => {
     setOldCategory(event.target.value);
   };
 
+  const handleOldProductChange = (event) => {
+    setOldProduct(event.target.value);
+  };
+
+  const handlUpdateItemChange = (event) => {
+    setUpdateItem(event.target.value);
+  };
+
   const handleUpdateCategoryChange  = (event) => {
     setUpdateCategory(event.target.value);
   };
+
+  const handleUpdateDescriptionChange  = (event) => {
+    setUpdateDescription(event.target.value);
+  };
   
+  const handleUpdateNameChange  = (event) => {
+    setUpdateName(event.target.value);
+  };
+
+  const handleUpdatePriceChange  = (event) => {
+    setUpdatePrice(event.target.value);
+  };
+
+  const handleUpdateInventoryChange  = (event) => {
+    setUpdateInventory(event.target.value);
+  };
+
+  const handleUpdateImageChange  = (event) => {
+    setUpdateImage(event.target.value);
+  };
+
   const handleDelCategoryChange = (event) => {
     setDelCategory(event.target.value);
   };
@@ -64,6 +99,101 @@ export default function Admin() {
     } catch (error) {
       console.error('An error occurred:', error);
     }
+  };
+
+  const handleUpdateProduct = async () => {
+    if (updateItem === 'description') {
+      try {
+        const response = await fetch('/api/updateDescription', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ updateDescription, oldProduct }), 
+        });
+
+        if (response.ok) {
+          console.log('Product updated successfully!');
+        } else {
+          console.error('Error updating product:', response.statusText);
+        }
+      } catch (error) {
+        console.error('An error occurred:', error);
+      }
+    } else if (updateItem === 'name') {
+      try {
+        const response = await fetch('/api/updateName', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ updateName, oldProduct }), 
+        });
+
+        if (response.ok) {
+          console.log('Product updated successfully!');
+        } else {
+          console.error('Error updating product:', response.statusText);
+        }
+      } catch (error) {
+        console.error('An error occurred:', error);
+      }
+    }else if (updateItem === 'price') {
+      try {
+        const response = await fetch('/api/updatePrice', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ updatePrice, oldProduct }), 
+        });
+
+        if (response.ok) {
+          console.log('Product updated successfully!');
+        } else {
+          console.error('Error updating product:', response.statusText);
+        }
+      } catch (error) {
+        console.error('An error occurred:', error);
+      }
+    }else if (updateItem === 'inventory') {
+      try {
+        const response = await fetch('/api/updateInventory', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ updateInventory, oldProduct }), 
+        });
+
+        if (response.ok) {
+          console.log('Product updated successfully!');
+        } else {
+          console.error('Error updating product:', response.statusText);
+        }
+      } catch (error) {
+        console.error('An error occurred:', error);
+      }
+    }else if (updateItem === 'image') {
+      try {
+        const response = await fetch('/api/updateImage', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ updateImage, oldProduct }), 
+        });
+
+        if (response.ok) {
+          console.log('Product updated successfully!');
+        } else {
+          console.error('Error updating product:', response.statusText);
+        }
+      } catch (error) {
+        console.error('An error occurred:', error);
+      }
+    }
+    
   };
 
   const handleDelProductClick = async () => {
@@ -273,7 +403,7 @@ export default function Admin() {
             <h5 className={styles.Title}>Update Category</h5>
             <form>
               <label className={styles.Label}>Category Name </label>
-              <select className={styles.Select} name="product" id="product" onChange={handleOldCategoryChange} required> 
+              <select className={styles.Select} name="oldCategory" id="oldCategory" onChange={handleOldCategoryChange} required> 
                 {categoryAll.map((category) => (
                   <option key={category.name} value={category.name}>{category.name}</option> 
                 ))}
@@ -287,6 +417,32 @@ export default function Admin() {
           </div>
           <div className={styles.Column}>
             <h5 className={styles.Title}>Update Product</h5>
+            <form>
+              <label className={styles.Label}>Category Name </label>
+              <select className={styles.Select} name="oldProduct" id="oldProduct" onChange={handleOldProductChange} required> 
+                {productAll.map((category) => (
+                  <option key={category.name} value={category.name}>{category.name}</option> 
+                ))}
+              </select>
+              <br />
+              <label className={styles.Label}>Update Item </label>
+              <select className={styles.Select} name="updateItem" id="updateItem" onChange={handlUpdateItemChange} required> 
+                <option key='name' value='name'>name</option> 
+                <option key='price' value='price'>price</option> 
+                <option key='description' value='description'>description</option> 
+                <option key='inventory' value='inventory'>inventory</option> 
+                <option key='image' value='image'>image</option> 
+              </select>
+              <br />
+              <label className={styles.Label}>Update Value </label>
+              {(updateItem === 'description')?<textarea type="text" id="updateDescription" name="updateDescription" onChange={handleUpdateDescriptionChange} required/>:null}
+              {(updateItem === 'name')?<input type="text" id="updateName" name="updateName" onChange={handleUpdateNameChange} required/>:null}
+              {(updateItem === 'price')?<input type="number" id="updatePrice" name="updatePrice" onChange={handleUpdatePriceChange} required/>:null}
+              {(updateItem === 'inventory')?<input type="number" id="updateInventory" name="updateInventory" onChange={handleUpdateInventoryChange} required/>:null}
+              {(updateItem === 'image')?<input className={styles.ImageButton} type="file" id="updateImage" name="updateImage" accept="image/jpeg, image/gif, image/png" onChange={handleUpdateImageChange} required />:null}
+              <br />
+              <button className={styles.Submit} onClick={handleUpdateProduct}>Submit</button>
+            </form>
           </div>
         </div>
       </body>
