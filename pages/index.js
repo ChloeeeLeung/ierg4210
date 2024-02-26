@@ -10,44 +10,20 @@ export default function Home({ hierarchicalMenu }) {
 
   const [categoryAll, setCategoryAll] = useState([]);
   const [productAll, setProductAll] = useState([]);
-
+  
   const test = async (category) => {
     try {
-      const response = await fetch('/api/product', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({pathname:category}), 
-      });
-
-      if (response.ok) {
-        console.log('Category inserted successfully!');
-      } else {
-        console.error('Error inserting category:', response.statusText);
-      }
-    } catch (error) {
-      console.error('An error occurred:', error);
-    }
-    try {
-      await fetch('/api/product')
-      .then((response) => {
+        const response = await fetch(`/api/product?cid=${category}`, { method: 'GET' });
         if (!response.ok) {
-          throw new Error('Network response was not ok');
+            throw new Error('Network response was not ok');
         }
-        return response.json();
-      })
-      .then((data) => {
+        const data = await response.json();
         setProductAll(data.productAll);
-      })
-      .catch((error) => {
-        console.error('Error fetching data:', error);
-      });
     } catch (error) {
-      console.error('An error occurred:', error);
+        console.error('An error occurred:', error);
     }
-    
-  };
+};
+
 
    useEffect(() => {
     fetch('/api/category')
