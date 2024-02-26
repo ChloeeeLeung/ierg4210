@@ -6,9 +6,24 @@ import React, { useState, useEffect } from 'react';
 export default function Admin() {
   const [newCategory, setNewCategory] = useState('');
   const [delCategory, setDelCategory] = useState('');
+  const [delProduct, setDelProduct] = useState('');
+  const [oldCategory, setOldCategory] = useState('');
+  const [updateCategory, setUpdateCategory] = useState('');
 
+  const handleOldCategoryChange = (event) => {
+    setOldCategory(event.target.value);
+  };
+
+  const handleUpdateCategoryChange  = (event) => {
+    setUpdateCategory(event.target.value);
+  };
+  
   const handleDelCategoryChange = (event) => {
     setDelCategory(event.target.value);
+  };
+
+  const handleDelProductChange = (event) => {
+    setDelProduct(event.target.value);
   };
 
   const handleDelCategoryClick = async () => {
@@ -25,6 +40,46 @@ export default function Admin() {
         console.log('Category deleted successfully!');
       } else {
         console.error('Error deleting category:', response.statusText);
+      }
+    } catch (error) {
+      console.error('An error occurred:', error);
+    }
+  };
+
+  const handleUpdateCategory = async () => {
+    try {
+      const response = await fetch('/api/updateCategory', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ updateCategory, oldCategory }), 
+      });
+
+      if (response.ok) {
+        console.log('Product updated successfully!');
+      } else {
+        console.error('Error updating product:', response.statusText);
+      }
+    } catch (error) {
+      console.error('An error occurred:', error);
+    }
+  };
+
+  const handleDelProductClick = async () => {
+    try {
+      const response = await fetch('/api/delProduct', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ delProduct }), 
+      });
+
+      if (response.ok) {
+        console.log('Product deleted successfully!');
+      } else {
+        console.error('Error deleting product:', response.statusText);
       }
     } catch (error) {
       console.error('An error occurred:', error);
@@ -56,7 +111,7 @@ export default function Admin() {
   };
 
   const [categoryAll, setCategoryAll] = useState([]);
-
+  const [productAll, setProductAll] = useState([]);
 
    useEffect(() => {
     fetch('/api/category')
@@ -68,6 +123,19 @@ export default function Admin() {
       })
       .then((data) => {
         setCategoryAll(data.categoryAll);
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+      });
+    fetch('/api/allProduct')
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setProductAll(data.allProducts);
       })
       .catch((error) => {
         console.error('Error fetching data:', error);
@@ -131,72 +199,96 @@ export default function Admin() {
         <div>
     </div>
         <br></br>
-        <h5 className={styles.Title}>New Category</h5>
-        <form> 
-          <label className={styles.Label}>Name </label>
-          <input type="text" id="newCategory" name="newCategory" value={newCategory} onChange={handleNewCategoryChange} required/>
-          <br></br>
-          <button className={styles.Submit} onClick={handleNewCategoryClick}>Submit</button>
-        </form>
+        <div className={styles.Row}>
+          <div className={styles.Column}>
+            <h5 className={styles.Title}>New Category</h5>
+            <form> 
+              <label className={styles.Label}>Name </label>
+              <input type="text" id="newCategory" name="newCategory" value={newCategory} onChange={handleNewCategoryChange} required/>
+              <br></br>
+              <button className={styles.Submit} onClick={handleNewCategoryClick}>Submit</button>
+            </form>
+          </div>
+          <div className={styles.Column}>
+            <h5 className={styles.Title}>New Product</h5>
+            <form>
+              <label className={styles.Label}>Category </label>
+              <select className={styles.Select} name="newProductCategory" id="newProductCategory" onChange={handleNewProductCategory} required> 
+                {categoryAll.map((category) => (
+                  <option key={category.cid} value={category.cid}>{category.name}</option> 
+                ))}
+              </select>
+              <br></br>
+              <label className={styles.Label}>Name</label>
+              <input type="text" id="productName" name="productName" onChange={handleProductName} required/>
+              <br></br>
+              <label className={styles.Label}>Price </label>
+              <input type="number" id="productPrice" name="productPrice" onChange={handleProductPrice} required/>
+              <br></br>
+              <label className={styles.Label}>Inventory </label>
+              <input type="number" id="productInventory" name="productInventory" onChange={handleProductInventory} required/>
+              <br></br>
+              <label className={styles.Label}>Description </label>
+              <textarea type="text" id="productDescription" name="productDescription" onChange={handleProductDescription} required/>
+              <br></br>
+              <label className={styles.Label}>Image </label>
+              <input className={styles.ImageButton} type="file" id="productImage" name="productImage" accept="image/jpeg, image/gif, image/png" onChange={handleProductImage} required />
+              <br></br>
+              <button className={styles.Submit} onClick={handleNewProductClick}>Submit</button>
+            </form>
+          </div>
+        </div>
         <br></br>
-        <h5 className={styles.Title}>New Product</h5>
-        <form>
-          <label className={styles.Label}>Category </label>
-          <select className={styles.Select} name="newProductCategory" id="newProductCategory" onChange={handleNewProductCategory} required> 
-            {categoryAll.map((category) => (
-              <option key={category.cid} value={category.cid}>{category.name}</option> 
-            ))}
-          </select>
-          <br></br>
-          <label className={styles.Label}>Name</label>
-          <input type="text" id="productName" name="productName" onChange={handleProductName} required/>
-          <br></br>
-          <label className={styles.Label}>Price </label>
-          <input type="number" id="productPrice" name="productPrice" onChange={handleProductPrice} required/>
-          <br></br>
-          <label className={styles.Label}>Inventory </label>
-          <input type="number" id="productInventory" name="productInventory" onChange={handleProductInventory} required/>
-          <br></br>
-          <label className={styles.Label}>Description </label>
-          <textarea type="text" id="productDescription" name="productDescription" onChange={handleProductDescription} required/>
-          <br></br>
-          <label className={styles.Label}>Image </label>
-          <input className={styles.ImageButton} type="file" id="productImage" name="productImage" accept="image/jpeg, image/gif, image/png" onChange={handleProductImage} required />
-          <br></br>
-          <button className={styles.Submit} onClick={handleNewProductClick}>Submit</button>
-        </form>
+        <div className={styles.Row}>
+          <div className={styles.Column}>
+            <h5 className={styles.Title}>Delete Category</h5>
+            <form>
+              <label className={styles.Label}>Category </label>
+              <select className={styles.Select } name="category" id="category" onChange={handleDelCategoryChange} required> 
+                {categoryAll.map((category) => (
+                  <option key={category.name} value={category.name}>{category.name}</option> 
+                ))}
+              </select>
+              <br></br>
+              <button className={styles.Submit} onClick={handleDelCategoryClick}>Submit</button>
+            </form>
+          </div>
+          <div className={styles.Column}>
+            <h5 className={styles.Title}>Delete Product</h5>
+            <form>
+              <label className={styles.Label}>Produtc Name </label>
+              <select className={styles.Select} name="product" id="product" onChange={handleDelProductChange} required> 
+                {productAll.map((product) => (
+                  <option key={product.pid} value={product.name}>{product.name}</option> 
+                ))} 
+              </select>
+              <br></br>
+              <button className={styles.Submit} onClick={handleDelProductClick}>Submit</button>
+            </form>
+          </div>
+        </div>
         <br></br>
-        <h5 className={styles.Title}>Delete Category</h5>
-        <form>
-          <label className={styles.Label}>Category </label>
-          <select className={styles.Select } name="category" id="category" onChange={handleDelCategoryChange} required> 
-            {categoryAll.map((category) => (
-              <option key={category.name} value={category.name}>{category.name}</option> 
-            ))}
-          </select>
-          <br></br>
-          <button className={styles.Submit} onClick={handleDelCategoryClick}>Submit</button>
-        </form>
-        <br></br>
-        <h5 className={styles.Title}>Delete Product</h5>
-        <form>
-          <label className={styles.Label}>Category </label>
-          <select className={styles.Select} name="category" id="category" required> 
-            {categoryAll.map((category) => (
-              <option key={category.cid} value={category.name}>{category.name}</option> 
-            ))} 
-          </select>
-          <br></br>
-          <label className={styles.Label}>Name </label>
-          <select className={styles.Select} name="productName" id="productName" required> 
-            <option value="decoration">product1</option> 
-            <option value="tableware">product2</option> 
-            <option value="vase">product3</option> 
-            <option value="cup">product4</option> 
-          </select>
-          <br></br>
-          <button className={styles.Submit}>Submit</button>
-        </form>
+        <div className={styles.Row}>
+          <div className={styles.Column}>
+            <h5 className={styles.Title}>Update Category</h5>
+            <form>
+              <label className={styles.Label}>Category Name </label>
+              <select className={styles.Select} name="product" id="product" onChange={handleOldCategoryChange} required> 
+                {categoryAll.map((category) => (
+                  <option key={category.name} value={category.name}>{category.name}</option> 
+                ))}
+              </select>
+              <br />
+              <label className={styles.Label}>Update Category Name</label>
+              <input type="text" id="updateCategory" name="updateCategory" value={updateCategory} onChange={handleUpdateCategoryChange} required/>
+              <br></br>
+              <button className={styles.Submit} onClick={handleUpdateCategory}>Submit</button>
+            </form>
+          </div>
+          <div className={styles.Column}>
+            <h5 className={styles.Title}>Update Product</h5>
+          </div>
+        </div>
       </body>
     </div>
   );

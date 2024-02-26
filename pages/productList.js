@@ -11,19 +11,27 @@ import productCup1 from './assets/productCup1.jpg';
 import productCup2 from './assets/productCup2.jpg';
 import Image from "next/image";
 
-export default function ProductList({productAll}) {
+export default function ProductList({ productAll }) {
+  const location = useLocation();
+  const [imageDataUrl, setImageDataUrl] = useState();
+
+  if (productAll.image) {
+    const imageDataBuffer = Buffer.from(productAll.image, 'base64');
+    setImageDataUrl(`data:image/jpeg;base64,${imageDataBuffer.toString('base64')}`);
+  }
+  
   return (
     <div className={styles.ProductList}>
       {productAll.map((product, index) => (
         <div className={styles.ProductCard} key={index}>
-          <Link to={`${location.pathname}/${product.name}`} state={{ product: product }}>
-            {/* <Image fill={true} src={product.image} className={styles.ProductImg} alt={product.name} /> */}
+          <Link to={{ pathname: `${location.pathname}/${product.pid}`}} state={{ product: product }}>
+            <Image src={`data:image/jpeg;base64,${product.image}`} className={styles.ProductImg} alt={product.name} height={64} width={64} />
           </Link>
-          <Link to={{ pathname: `/Cup/${product.pid}`}} state={{ product: product }}>
+          <Link to={{ pathname: `${location.pathname}/${product.pid}`}} state={{ product: product }}>
             <h6 className={styles.ProductName}>{product.name}</h6>
           </Link>
           <h6 className={styles.ProductPrice}>{product.price}</h6>
-          <button className={styles.AddToCart}>Add To Cart</button>
+                    <button className={styles.AddToCart}>Add To Cart</button>
         </div>
       ))}
     </div>
