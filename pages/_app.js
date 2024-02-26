@@ -5,13 +5,6 @@ import Product from "./product.js";
 import Admin from "./admin.js";
 import "../styles/globals.css";
 
-const productList = [
-  { id: 'decoration' },
-  { id: 'tableware' },
-  { id: 'vase' },
-  { id: 'cup' },
-];
-
 export default function App() {
   const [isServer, setIsServer] = useState(true);
   const [categoryAll, setCategoryAll] = useState([]);
@@ -39,6 +32,19 @@ export default function App() {
     { name: 'Home', path: '/' },
   ];
 
+  const sreachProduct = async (category) => {
+    try {
+      const response = await fetch(`/api/product?cid=${category}`, { method: 'GET' });
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data = await response.json();
+      setProductAll(data.productAll);
+    } catch (error) {
+      console.error('An error occurred:', error);
+    }
+  };
+
   return (
     <>
       <Router>
@@ -51,9 +57,14 @@ export default function App() {
           {categoryAll.map((category) => (
             <Route
               path={`${category.name}`}
-              element={<Home hierarchicalMenu={
-                 [{ name: 'Home', path: '/' },{ name: category.name, path: `/${category.name}` },]
-              } />}
+              element={
+                <Home
+                  hierarchicalMenu={[
+                    { name: 'Home', path: '/' },
+                    { name: category.name, path: `/${category.name}` },
+                  ]}
+                />
+              }
             />
           ))}
           {categoryAll.map((category) => (
@@ -72,11 +83,7 @@ export default function App() {
             />
           ))}
           <Route path="*" element={<Navigate to="/" />} />
-          <Route
-            exact
-            path="/admin"
-            element={<Admin />}
-          />
+          <Route exact path="/admin" element={<Admin />} />
         </Routes>
       </Router>
     </>

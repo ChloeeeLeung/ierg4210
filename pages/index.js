@@ -1,4 +1,4 @@
-import { Link, useLocation  } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import React, { useState, useEffect } from 'react';
 import styles from "../styles/Home.module.css";
 import ProductList from './productList.js';
@@ -10,22 +10,21 @@ export default function Home({ hierarchicalMenu }) {
 
   const [categoryAll, setCategoryAll] = useState([]);
   const [productAll, setProductAll] = useState([]);
-  
-  const test = async (category) => {
+
+  const searchProduct = async (category) => {
     try {
-        const response = await fetch(`/api/product?cid=${category}`, { method: 'GET' });
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        const data = await response.json();
-        setProductAll(data.productAll);
+      const response = await fetch(`/api/product?cid=${category}`, { method: 'GET' });
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data = await response.json();
+      setProductAll(data.productAll);
     } catch (error) {
-        console.error('An error occurred:', error);
+      console.error('An error occurred:', error);
     }
-};
+  };
 
-
-   useEffect(() => {
+  useEffect(() => {
     fetch('/api/category')
       .then((response) => {
         if (!response.ok) {
@@ -39,7 +38,8 @@ export default function Home({ hierarchicalMenu }) {
       .catch((error) => {
         console.error('Error fetching data:', error);
       });
-    if (location.pathname==='/') {
+
+    if (location.pathname === '/') {
       fetch('/api/allProduct')
         .then((response) => {
           if (!response.ok) {
@@ -54,7 +54,7 @@ export default function Home({ hierarchicalMenu }) {
           console.error('Error fetching data:', error);
         });
     }
-   }, []); 
+  }, []);
 
   return (
     <div className={styles.App}>
@@ -76,7 +76,7 @@ export default function Home({ hierarchicalMenu }) {
               <input type="number" className={styles.QuantityInput} />
               <h6 className={styles.LeftText}>$ 150</h6>
             </div>
-            <hr className={styles.Line}/>
+            <hr className={styles.Line} />
             <button className={styles.Checkout}>Checkout</button>
           </div>
         </nav>
@@ -84,7 +84,10 @@ export default function Home({ hierarchicalMenu }) {
           {hierarchicalMenu.map((item, index) => (
             <React.Fragment key={item.path}>
               {index !== 0 && ' > '}
-              <Link to={item.path} className={location.pathname === item.path ? 'active' : ''}>
+              <Link
+                to={item.path}
+                className={location.pathname === item.path ? 'active' : ''}
+              >
                 {item.name}
               </Link>
             </React.Fragment>
@@ -93,10 +96,15 @@ export default function Home({ hierarchicalMenu }) {
         <div className={styles.Row}>
           {categoryAll.map((category) => (
             <Link to={`/${category.name}`}>
-              <button className={styles.CatagoriesButton} value={category.name} onClick={()=>test(category.cid)}>
-                {category.name}</button>
+              <button
+                className={styles.CategoriesButton}
+                value={category.name}
+                onClick={() => searchProduct(category.cid)}
+              >
+                {category.name}
+              </button>
             </Link>
-            ))}
+          ))}
         </div>
         <ProductList productAll={productAll} />
       </body>

@@ -45,7 +45,7 @@ export default function Product({ hierarchicalMenu }) {
           ))}
         </nav>
         <div className={styles.ProductPageCard}>
-          <Image src={product.image} className={styles.ProductPageImg} alt="Product 1" height={100} width={100}/>
+          <Image src={product.image} className={styles.ProductPageImg} alt="Product 1" height={100} width={100} />
           <dir className={styles.ProductPageDetail}>
             <h3>{product.name}</h3>
             <h5>Price: {product.price}</h5>
