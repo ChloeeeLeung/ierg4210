@@ -1,4 +1,4 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation  } from "react-router-dom";
 import React, { useState, useEffect } from 'react';
 import styles from "../styles/Home.module.css";
 import ProductList from './productList.js';
@@ -9,6 +9,45 @@ export default function Home({ hierarchicalMenu }) {
   const location = useLocation();
 
   const [categoryAll, setCategoryAll] = useState([]);
+  const [productAll, setProductAll] = useState([]);
+
+  const test = async (category) => {
+    try {
+      const response = await fetch('/api/product', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({pathname:category}), 
+      });
+
+      if (response.ok) {
+        console.log('Category inserted successfully!');
+      } else {
+        console.error('Error inserting category:', response.statusText);
+      }
+    } catch (error) {
+      console.error('An error occurred:', error);
+    }
+    try {
+      await fetch('/api/product')
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setProductAll(data.productAll);
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+      });
+    } catch (error) {
+      console.error('An error occurred:', error);
+    }
+    
+  };
 
    useEffect(() => {
     fetch('/api/category')
@@ -63,23 +102,12 @@ export default function Home({ hierarchicalMenu }) {
         <div className={styles.Row}>
           {categoryAll.map((category) => (
             <Link to={`/${category.name}`}>
-              <button className={styles.CatagoriesButton}>{category.name}</button>
+              <button className={styles.CatagoriesButton} value={category.name} onClick={()=>test(category.cid)}>
+                {category.name}</button>
             </Link>
             ))}
-          {/* <Link to="/decoration">
-            <button className={styles.CatagoriesButton}>Decoration</button>
-          </Link>
-          <Link to="/tableware">
-            <button className={styles.CatagoriesButton}>Tableware</button>
-          </Link>
-          <Link to="/vase">
-            <button className={styles.CatagoriesButton}>Vase</button>
-          </Link>
-          <Link to="/cup">
-            <button className={styles.CatagoriesButton}>Cup</button>
-          </Link> */}
         </div>
-        <ProductList />
+        <ProductList productAll={productAll} />
       </body>
     </div>
   );

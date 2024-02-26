@@ -183,7 +183,7 @@ export default function Admin() {
           <label className={styles.Label}>Category </label>
           <select className={styles.Select} name="category" id="category" required> 
             {categoryAll.map((category) => (
-              <option key={category.cid} value={category.cid}>{category.name}</option> 
+              <option key={category.cid} value={category.name}>{category.name}</option> 
             ))} 
           </select>
           <br></br>

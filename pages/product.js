@@ -45,7 +45,7 @@ export default function Product({ hierarchicalMenu }) {
           ))}
         </nav>
         <div className={styles.ProductPageCard}>
-          <Image src={product.image} className={styles.ProductPageImg} alt="Product 1" />
+          {/* <Image src={product.image} className={styles.ProductPageImg} alt="Product 1" /> */}
           <dir className={styles.ProductPageDetail}>
             <h3>{product.name}</h3>
             <h5>Price: {product.price}</h5>
@@ -53,7 +53,7 @@ export default function Product({ hierarchicalMenu }) {
             {product.inventory < 3 && (
               <h5 className={styles.Inventory}>Only {product.inventory} left!</h5>
             )}
-            <h6>Description: This is a {product.name}.</h6>
+            <h6>Description: {product.description	}.</h6>
             <button className={styles.AddToCart}>Add To Cart</button>
           </dir>
         </div>

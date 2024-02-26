@@ -39,26 +39,6 @@ export default function App() {
     { name: 'Home', path: '/' },
   ];
 
-  const hierarchicalDecorationMenu = [
-    { name: 'Home', path: '/' },
-    { name: 'Decoration', path: '/decoration' },
-  ];
-
-  const hierarchicalTablewareMenu = [
-    { name: 'Home', path: '/' },
-    { name: 'Tableware', path: '/tableware' },
-  ];
-
-  const hierarchicalVaseMenu = [
-    { name: 'Home', path: '/' },
-    { name: 'Vase', path: '/vase' },
-  ];
-
-  const hierarchicalCupMenu = [
-    { name: 'Home', path: '/' },
-    { name: 'Decoration', path: '/cup' },
-  ];
-
   return (
     <>
       <Router>
@@ -71,34 +51,20 @@ export default function App() {
           {categoryAll.map((category) => (
             <Route
               path={`${category.name}`}
-              element={<Home hierarchicalMenu={hierarchicalDecorationMenu} />}
+              element={<Home hierarchicalMenu={
+                 [{ name: 'Home', path: '/' },{ name: category.name, path: `/${category.name}` },]
+              } />}
             />
           ))}
-          <Route
-            path="/decoration"
-            element={<Home hierarchicalMenu={hierarchicalDecorationMenu} />}
-          />
-          <Route
-            path="/tableware"
-            element={<Home hierarchicalMenu={hierarchicalTablewareMenu} />}
-          />
-          <Route
-            path="/vase"
-            element={<Home hierarchicalMenu={hierarchicalVaseMenu} />}
-          />
-          <Route
-            path="/cup"
-            element={<Home hierarchicalMenu={hierarchicalCupMenu} />}
-          />
-          {productList.map((product) => (
+          {categoryAll.map((category) => (
             <Route
-              key={product.id}
-              path={`/${product.id}/:product`}
+              key={category.name}
+              path={`/${category.name}/:product`}
               element={
                 <Product
                   hierarchicalMenu={[
                     { name: 'Home', path: '/' },
-                    { name: `${product.id}`, path: `/${product.id}` },
+                    { name: `${category.name}`, path: `/${category.name}` },
                     { name: 'Product', path: '' },
                   ]}
                 />
