@@ -1,6 +1,6 @@
 import styles from "../styles/Admin.module.css";
 import logo from './assets/logo.jpg';
-import Image from "next/image";
+// import Image from "next/image";
 import React, { useState, useEffect } from 'react';
 
 export default function Admin() {
@@ -291,9 +291,44 @@ export default function Admin() {
   const handleProductDescription = (event) => {
     setProductDescription(event.target.value);
   };
-  const handleProductImage = (event) => {
-    setProductImage(event.target.value);
-  };
+
+const handleProductImage = (event) => {
+  const file = event.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.src = e.target.result;
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const MAX_WIDTH = 300; 
+        const MAX_HEIGHT = 300; 
+        let width = img.width;
+        let height = img.height;
+
+        if (width > height && width > MAX_WIDTH) {
+          height *= MAX_WIDTH / width;
+          width = MAX_WIDTH;
+        } else if (height > MAX_HEIGHT) {
+          width *= MAX_HEIGHT / height;
+          height = MAX_HEIGHT;
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+
+        const resizedDataURL = canvas.toDataURL('image/jpeg', 0.7); // Adjust the quality (0.7 in this example)
+
+        setProductImage(resizedDataURL); // Store the resized base64 image data
+      };
+    };
+    reader.readAsDataURL(file);
+  }
+};
+
   const handleNewProductCategory = (event) => {
     setNewProductCategory(event.target.value);
   };
@@ -322,7 +357,6 @@ export default function Admin() {
   return (
     <div className={styles.App}>
       <header className={styles.AppHeader}>
-        <Image src={logo} className={styles.AppLogo} alt="logo" />
         <h4>CERAMIC WORLD - ADMIN PANEL</h4>
       </header>
       <body className={styles.AppBody}>

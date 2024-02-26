@@ -3,8 +3,8 @@ import db from '../../database.js';
 export default function handler(req, res) {
   try {
     let sql; 
-    // sql = `DELETE FROM categories`
-    // db.run(sql);
+    // sql = `DELETE FROM realProducts WHERE pid =?`
+    // db.run(sql, [2]);
     const { newCategory } = req.body;
     if (newCategory != '' ) {
       sql = `INSERT INTO categories (name) VALUES(?)`;

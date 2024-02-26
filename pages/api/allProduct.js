@@ -3,7 +3,7 @@ import db from '../../database.js';
 export default function handler(req, res) {
   try {
     let sql;
-    sql = `SELECT * FROM products`;
+    sql = `SELECT * FROM realProducts`;
     db.all(sql, [], (err, rows) => {
       if (err) {
         console.error(err.message);

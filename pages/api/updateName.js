@@ -5,7 +5,7 @@ export default async function handler(req, res) {
     let sql;
         const { updateName, oldProduct } = req.body;
 
-        sql = 'UPDATE products SET name = ? WHERE name = ?';
+        sql = 'UPDATE realProducts SET name = ? WHERE name = ?';
         db.all(sql, [updateName, oldProduct], (err) => {
             if (err) {
                 console.error(err.message);

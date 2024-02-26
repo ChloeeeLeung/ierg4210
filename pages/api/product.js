@@ -3,7 +3,7 @@ import db from '../../database.js';
 export default function handler(req, res) {
     try {
         const { cid } = req.query; 
-        const sql = 'SELECT * FROM products WHERE cid = ?';
+        const sql = 'SELECT * FROM realProducts WHERE cid = ?';
         db.all(sql, [cid], (err, rows) => {
             if (err) {
                 console.error(err.message);
