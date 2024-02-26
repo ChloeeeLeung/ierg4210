@@ -39,6 +39,21 @@ export default function Home({ hierarchicalMenu }) {
       .catch((error) => {
         console.error('Error fetching data:', error);
       });
+    if (location.pathname==='/') {
+      fetch('/api/allProduct')
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then((data) => {
+          setProductAll(data.allProducts);
+        })
+        .catch((error) => {
+          console.error('Error fetching data:', error);
+        });
+    }
    }, []); 
 
   return (
