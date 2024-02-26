@@ -395,8 +395,14 @@ const handleProductImage = (event) => {
               <label className={styles.Label}>Description </label>
               <textarea type="text" id="productDescription" name="productDescription" onChange={handleProductDescription} required/>
               <br></br>
-              <label className={styles.Label}>Image </label>
-              <input className={styles.ImageButton} type="file" id="productImage" name="productImage" accept="image/jpeg, image/gif, image/png" onChange={handleProductImage} required />
+              <div className={styles.ImageInput}>
+                <div className={styles.DropImage}>
+                  <div className={styles.ImageView}>
+                    <input className={styles.ImageButton} type="file" id="productImage" name="productImage" accept="image/jpeg, image/gif, image/png" onChange={handleProductImage} required hidden/>
+                    <h6>Drag and drop your image here.</h6>
+                  </div>
+                </div>
+              </div>
               <br></br>
               <button className={styles.Submit} onClick={handleNewProductClick}>Submit</button>
             </form>
