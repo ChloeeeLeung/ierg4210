@@ -8,10 +8,15 @@ export default function ProductList({ productAll }) {
     <div className={styles.ProductList}>
       {productAll.map((product, index) => (
         <div className={styles.ProductCard} key={index}>
-          <Link to={{ pathname: `${location.pathname}/${product.pid}` }} state={{ product: product }}>
+          <Link to={{ pathname:
+              (location.pathname!=='/')?
+              `${location.pathname}/${product.pid}`:`/Cup/${product.pid}` }} state={{ product: product }}>
             <img src={product.image} className={styles.ProductImg} alt={product.name} height={100} width={100} />
           </Link>
-          <Link to={{ pathname: `${location.pathname}/${product.pid}` }} state={{ product: product }}>
+          <Link to={{
+            pathname:
+              (location.pathname!=='/')?
+              `${location.pathname}/${product.pid}`:`/Cup/${product.pid}`}} state={{ product: product }}>
             <h6 className={styles.ProductName}>{product.name}</h6>
           </Link>
           <h6 className={styles.ProductPrice}>${product.price}</h6>
