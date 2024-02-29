@@ -38,7 +38,7 @@ export default function Product({ hierarchicalMenu }) {
           {hierarchicalMenu.map((item, index) => (
             <React.Fragment key={item.path}>
               {index !== 0 && ' > '}
-              <Link to={item.path} className={location.pathname === item.path ? 'active' : ''} state={{ product: product }}>
+              <Link to={item.path} state={{ product: product }}>
                 {item.name}
               </Link>
             </React.Fragment>

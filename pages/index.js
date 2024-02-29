@@ -84,10 +84,7 @@ export default function Home({ hierarchicalMenu }) {
           {hierarchicalMenu.map((item, index) => (
             <React.Fragment key={item.path}>
               {index !== 0 && ' > '}
-              <Link
-                to={item.path}
-                className={location.pathname === item.path ? 'active' : ''}
-              >
+              <Link to={item.path} onClick={()=>router.reload()}>
                 {item.name}
               </Link>
             </React.Fragment>

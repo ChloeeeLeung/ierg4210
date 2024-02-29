@@ -1,22 +1,59 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import styles from "../styles/ProductList.module.css";
 
 export default function ProductList({ productAll }) {
   const location = useLocation();
+
+  const [categories, setCategories] = useState([]);
+
+  const searchCategory = async (cid) => {
+    const response = await fetch(`/api/searchCategory?cid=${cid}`, { method: 'GET' });
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    const data = await response.json();
+    return data.category;
+  };
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      const categoryPromises = productAll.map((product) => searchCategory(product.cid));
+      const resolvedCategories = await Promise.all(categoryPromises);
+      setCategories(resolvedCategories);
+    };
+
+    fetchCategories();
+  }, [productAll]);
+
   return (
     <div className={styles.ProductList}>
       {productAll.map((product, index) => (
         <div className={styles.ProductCard} key={index}>
-          <Link to={{ pathname:
-              (location.pathname!=='/')?
-              `${location.pathname}/${product.pid}`:`/Cup/${product.pid}` }} state={{ product: product }}>
-            <img src={product.image} className={styles.ProductImg} alt={product.name} height={100} width={100} />
+          <Link
+            to={{
+              pathname:
+                categories[index] &&
+                `/${categories[index].map((category) => category).join(", ")}/${product.pid}`,
+            }}
+            state={{ product: product }}
+          >
+            <img
+              src={product.image}
+              className={styles.ProductImg}
+              alt={product.name}
+              height={100}
+              width={100}
+            />
           </Link>
-          <Link to={{
-            pathname:
-              (location.pathname!=='/')?
-              `${location.pathname}/${product.pid}`:`/Cup/${product.pid}`}} state={{ product: product }}>
+          <Link
+            to={{
+              pathname:
+                categories[index] &&
+                `/${categories[index].map((category) => category).join(", ")}/${product.pid}`,
+            }}
+            state={{ product: product }}
+          >
             <h6 className={styles.ProductName}>{product.name}</h6>
           </Link>
           <h6 className={styles.ProductPrice}>${product.price}</h6>
