@@ -1,0 +1,31 @@
+.Checkout {
+    margin: 5px;
+    background-color: #886F68;
+    color: white;
+    border-radius: 5px;
+    border: 1;
+    border-color: white;
+    padding: 5px 30px;
+}
+
+.LeftText {
+    text-align: left;
+    margin: 5px;
+    font-size: small;
+}
+
+.Line {
+    margin: 5px;
+    color: #886F68;
+    width: 95%;
+}
+
+.RowContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.QuantityInput {
+    width: 50px;
+}

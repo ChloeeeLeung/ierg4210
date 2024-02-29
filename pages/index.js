@@ -4,6 +4,7 @@ import styles from "../styles/Home.module.css";
 import ProductList from './productList.js';
 import logo from './assets/logo.jpg';
 import Image from "next/image";
+import Cart from './cart.js';
 
 export default function Home({ hierarchicalMenu }) {
   const location = useLocation();
@@ -66,18 +67,7 @@ export default function Home({ hierarchicalMenu }) {
         <nav className={styles.ShoppingList}>
           <h6 className={styles.ShoppingList}>Shopping List</h6>
           <div className={styles.Submenu}>
-            <div className={styles.RowContainer}>
-              <h6 className={styles.LeftText}>Candle Container</h6>
-              <input type="number" className={styles.QuantityInput} />
-              <h6 className={styles.LeftText}>$ 150</h6>
-            </div>
-            <div className={styles.RowContainer}>
-              <h6 className={styles.LeftText}>Candle Container</h6>
-              <input type="number" className={styles.QuantityInput} />
-              <h6 className={styles.LeftText}>$ 150</h6>
-            </div>
-            <hr className={styles.Line} />
-            <button className={styles.Checkout}>Checkout</button>
+            <Cart/>
           </div>
         </nav>
         <nav className={styles.Hierarchical}>

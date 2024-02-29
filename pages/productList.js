@@ -7,7 +7,7 @@ export default function ProductList({ productAll }) {
   const [cartProduct, setCartProduct] = useState([]);
 
   const addToCart = async (product) => {
-    const productExists = cartProduct.some((p) => p.name === product.name);
+    const productExists = cartProduct.some((p) => p.pid === product.pid);
     
     if (!productExists) {
        setCartProduct([...cartProduct, product]);
@@ -66,10 +66,10 @@ export default function ProductList({ productAll }) {
             <h6 className={styles.ProductName}>{product.name}</h6>
           </Link>
           <h6 className={styles.ProductPrice}>${product.price}</h6>
-          <button className={styles.AddToCart} onClick={() => addToCart({ name: product.name, price: product.price })}>Add To Cart</button>
-          <p>{cartProduct.map((product, index) => (
-          <li key={index}>{product.name}</li>
-        ))}</p>
+          <button className={styles.AddToCart} onClick={() => addToCart({ pid: product.pid, price: product.price })}>Add To Cart</button>
+          {/* <p>{cartProduct.map((product, index) => (
+          <li key={index}>{product.pid}</li>
+        ))}</p> */}
         </div>
       ))}
     </div>
