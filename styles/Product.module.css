@@ -68,6 +68,9 @@
   border-radius: 15px;
   margin-left: -25vh;
   min-width: 40vh;
+  border-width: 1px;
+  border-color: #3D2C2E;
+  border-style: solid;
 }
 
 .ShoppingList .Submenu {

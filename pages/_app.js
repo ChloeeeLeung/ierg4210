@@ -32,19 +32,6 @@ export default function App() {
     { name: 'Home', path: '/' },
   ];
 
-  const sreachProduct = async (category) => {
-    try {
-      const response = await fetch(`/api/product?cid=${category}`, { method: 'GET' });
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      const data = await response.json();
-      setProductAll(data.productAll);
-    } catch (error) {
-      console.error('An error occurred:', error);
-    }
-  };
-
   return (
     <>
       <Router>

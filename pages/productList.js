@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import styles from "../styles/ProductList.module.css";
 
 export default function ProductList({ productAll }) {
-  const location = useLocation();
-
   const [categories, setCategories] = useState([]);
 
   const searchCategory = async (cid) => {
