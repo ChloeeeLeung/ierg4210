@@ -66,7 +66,7 @@ export default function ProductList({ productAll }) {
             <h6 className={styles.ProductName}>{product.name}</h6>
           </Link>
           <h6 className={styles.ProductPrice}>${product.price}</h6>
-          <button className={styles.AddToCart} onClick={() => addToCart({ pid: product.pid, price: product.price })}>Add To Cart</button>
+          <button className={styles.AddToCart} onClick={() => addToCart({ pid: product.pid, quantity: 1 })}>Add To Cart</button>
           {/* <p>{cartProduct.map((product, index) => (
           <li key={index}>{product.pid}</li>
         ))}</p> */}

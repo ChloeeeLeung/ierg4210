@@ -43,7 +43,7 @@ export default function Product({ hierarchicalMenu }) {
             {product.inventory < 3 && (
               <h5 className={styles.Inventory}>Only {product.inventory} left!</h5>
             )}
-            <h6>Description: {product.description	}.</h6>
+            <h6>Description: {product.description}</h6>
             <button className={styles.AddToCart}>Add To Cart</button>
           </dir>
         </div>
