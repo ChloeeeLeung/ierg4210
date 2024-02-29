@@ -7,11 +7,13 @@ export default function ProductList({ productAll }) {
   const [cartProduct, setCartProduct] = useState([]);
 
   const addToCart = async (product) => {
+    const cartProduct = JSON.parse(localStorage.getItem("cartProduct")) || [];
     const productExists = cartProduct.some((p) => p.pid === product.pid);
-    
+
     if (!productExists) {
-       setCartProduct([...cartProduct, product]);
-      localStorage.setItem("cartProduct", JSON.stringify([...cartProduct, product]));
+      const updatedCart = [...cartProduct, product];
+      setCartProduct(updatedCart);
+      localStorage.setItem("cartProduct", JSON.stringify(updatedCart));
     }
   };
 

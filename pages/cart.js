@@ -12,7 +12,12 @@ export default function Cart() {
         throw new Error('Network response was not ok');
       }
       const data = await response.json();
-      setProductName(data.productName);
+      if (productName == []) {
+        setProductName(data.productName);
+      } else {
+        // setProductName(prevNames => [...prevNames, data.productName]);
+      }
+      
     } catch (error) {
       console.error('An error occurred:', error);
     }
@@ -22,21 +27,29 @@ export default function Cart() {
     const cartProduct = localStorage.getItem("cartProduct");
     if (cartProduct) {
       setCartList(JSON.parse(cartProduct));
-    }
-    cartList.forEach((cartProduct) => {
+      cartList.forEach((cartProduct) => {
         searchProduct(cartProduct.pid);
       });
-  }, []);
+    }
+
+  }, [cartList]);
+
+  const handleQuantityChange = (event, index) => {
+    const updatedCartList = [...cartList];
+    updatedCartList[index].quantity = event.target.value;
+    setCartList(updatedCartList);
+  };
+
 
   return (
     <div>
-      {cartList.map((product) => ( 
+      {cartList.map((product, index) => ( 
         <div className={styles.RowContainer}>
           <h6 className={styles.LeftText}>{product.pid}</h6>
-          {productName.map((product, index) => (
-            <h6>{product.name}</h6>
-          ))}
-          <input type="number" className={styles.QuantityInput} min="0" />
+          <p>{productName[index]&&productName[index].name}</p>
+          <input type="number" className={styles.QuantityInput} min="0" value={product.quantity}
+            onChange={(event) => handleQuantityChange(event, index)}
+/>
           <h6 className={styles.LeftText}>${product.price}</h6>
         </div>
       ))} 
