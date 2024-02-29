@@ -1,6 +1,4 @@
 import styles from "../styles/Admin.module.css";
-import logo from './assets/logo.jpg';
-// import Image from "next/image";
 import React, { useState, useEffect } from 'react';
 
 export default function Admin() {
@@ -320,9 +318,9 @@ const handleProductImage = (event) => {
         const ctx = canvas.getContext('2d');
         ctx.drawImage(img, 0, 0, width, height);
 
-        const resizedDataURL = canvas.toDataURL('image/jpeg', 0.7); // Adjust the quality (0.7 in this example)
+        const resizedDataURL = canvas.toDataURL('image/jpeg', 0.7);
 
-        setProductImage(resizedDataURL); // Store the resized base64 image data
+        setProductImage(resizedDataURL);
       };
     };
     reader.readAsDataURL(file);
