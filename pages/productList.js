@@ -4,6 +4,16 @@ import styles from "../styles/ProductList.module.css";
 
 export default function ProductList({ productAll }) {
   const [categories, setCategories] = useState([]);
+  const [cartProduct, setCartProduct] = useState([]);
+
+  const addToCart = async (product) => {
+    const productExists = cartProduct.some((p) => p.name === product.name);
+    
+    if (!productExists) {
+       setCartProduct([...cartProduct, product]);
+      localStorage.setItem("cartProduct", JSON.stringify([...cartProduct, product]));
+    }
+  };
 
   const searchCategory = async (cid) => {
     const response = await fetch(`/api/searchCategory?cid=${cid}`, { method: 'GET' });
@@ -15,6 +25,7 @@ export default function ProductList({ productAll }) {
   };
 
   useEffect(() => {
+    setCartProduct(JSON.parse(localStorage.getItem("cartProduct")));
     const fetchCategories = async () => {
       const categoryPromises = productAll.map((product) => searchCategory(product.cid));
       const resolvedCategories = await Promise.all(categoryPromises);
@@ -55,7 +66,10 @@ export default function ProductList({ productAll }) {
             <h6 className={styles.ProductName}>{product.name}</h6>
           </Link>
           <h6 className={styles.ProductPrice}>${product.price}</h6>
-          <button className={styles.AddToCart}>Add To Cart</button>
+          <button className={styles.AddToCart} onClick={() => addToCart({ name: product.name, price: product.price })}>Add To Cart</button>
+          <p>{cartProduct.map((product, index) => (
+          <li key={index}>{product.name}</li>
+        ))}</p>
         </div>
       ))}
     </div>
