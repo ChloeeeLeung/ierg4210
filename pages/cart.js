@@ -15,7 +15,7 @@ export default function Cart() {
         const names = [];
         const prices = [];
         for (const cartProduct of parsedCartProduct) {
-          const response = await fetch(`/api/productName?pid=${cartProduct.pid}`, { method: 'GET' });
+          const response = await fetch(`/api/productDetail?pid=${cartProduct.pid}`, { method: 'GET' });
           if (!response.ok) {
             throw new Error('Network response was not ok');
           }
