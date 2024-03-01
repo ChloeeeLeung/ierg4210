@@ -36,8 +36,15 @@ export default function Cart() {
   const handleQuantityChange = (event, index) => {
     const updatedCartList = [...cartList];
     updatedCartList[index].quantity = event.target.value;
-    setCartList(updatedCartList);
-    localStorage.setItem("cartProduct", JSON.stringify(cartList));
+
+    if (updatedCartList[index].quantity === '0') {
+      const filteredCartList = updatedCartList.filter((i) => i !== index);
+      setCartList(filteredCartList);
+      localStorage.setItem("cartProduct", JSON.stringify(filteredCartList));
+    } else {
+      setCartList(updatedCartList);
+      localStorage.setItem("cartProduct", JSON.stringify(updatedCartList));
+    }
   };
 
   return (
