@@ -10,7 +10,7 @@ export default function handler(req, res) {
                 res.status(500).json({ error: 'Internal Server Error' });
                 return;
             }
-            const productName = rows.map((row) => row);
+            const productName = rows.map((row) => row.name);
             res.status(200).json({ productName });
         });
     } catch (error) {

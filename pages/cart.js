@@ -3,36 +3,30 @@ import styles from "../styles/Cart.module.css";
 
 export default function Cart() {
   const [cartList, setCartList] = useState([]);
-  const [productName, setProductName] = useState([]);
-
-  const searchProduct = async (productPid) => {
-    try {
-      const response = await fetch(`/api/productName?pid=${productPid}`, { method: 'GET' });
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      const data = await response.json();
-      if (productName == []) {
-        setProductName(data.productName);
-      } else {
-        // setProductName(prevNames => [...prevNames, data.productName]);
-      }
-      
-    } catch (error) {
-      console.error('An error occurred:', error);
-    }
-  };
+  const [productNames, setProductNames] = useState([]);
 
   useEffect(() => {
-    const cartProduct = localStorage.getItem("cartProduct");
-    if (cartProduct) {
-      setCartList(JSON.parse(cartProduct));
-      cartList.forEach((cartProduct) => {
-        searchProduct(cartProduct.pid);
-      });
-    }
+    const fetchProductNames = async () => {
+      const cartProduct = localStorage.getItem("cartProduct");
+      if (cartProduct) {
+        const parsedCartProduct = JSON.parse(cartProduct);
+        setCartList(parsedCartProduct);
+        const names = [];
+        for (const cartProduct of parsedCartProduct) {
+          const response = await fetch(`/api/productName?pid=${cartProduct.pid}`, { method: 'GET' });
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          const data = await response.json();
+          const productName = data.productName || 'error';
+          names.push(productName);
+        }
+        setProductNames(names);
+      }
+    };
 
-  }, [cartList]);
+    fetchProductNames();
+  }, []);
 
   const handleQuantityChange = (event, index) => {
     const updatedCartList = [...cartList];
@@ -40,19 +34,21 @@ export default function Cart() {
     setCartList(updatedCartList);
   };
 
-
   return (
     <div>
-      {cartList.map((product, index) => ( 
-        <div className={styles.RowContainer}>
-          <h6 className={styles.LeftText}>{product.pid}</h6>
-          <p>{productName[index]&&productName[index].name}</p>
-          <input type="number" className={styles.QuantityInput} min="0" value={product.quantity}
+      {cartList.map((product, index) => (
+        <div className={styles.RowContainer} key={index}>
+          <h6 className={styles.LeftText}>{productNames[index]}</h6>
+          <input
+            type="number"
+            className={styles.QuantityInput}
+            min="0"
+            value={product.quantity}
             onChange={(event) => handleQuantityChange(event, index)}
-/>
+          />
           <h6 className={styles.LeftText}>${product.price}</h6>
         </div>
-      ))} 
+      ))}
       <hr className={styles.Line} />
       <button className={styles.Checkout}>Checkout</button>
     </div>
