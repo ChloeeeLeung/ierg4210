@@ -11,6 +11,7 @@ export default function Home({ hierarchicalMenu }) {
 
   const [categoryAll, setCategoryAll] = useState([]);
   const [productAll, setProductAll] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const searchProduct = async (category) => {
     try {
@@ -22,6 +23,17 @@ export default function Home({ hierarchicalMenu }) {
       setProductAll(data.productAll);
     } catch (error) {
       console.error('An error occurred:', error);
+    }
+  };
+
+  const handleScroll = () => {
+    const scrollTop = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
+    const scrollHeight = (document.documentElement && document.documentElement.scrollHeight) || document.body.scrollHeight;
+    const clientHeight = document.documentElement.clientHeight || window.innerHeight;
+    const scrolledToBottom = Math.ceil(scrollTop + clientHeight) >= scrollHeight;
+
+    if (scrolledToBottom) {
+      setCurrentPage(prevPage => prevPage + 1);
     }
   };
 
@@ -56,6 +68,31 @@ export default function Home({ hierarchicalMenu }) {
         });
     }
   }, []);
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+  useEffect(() => {
+    if(location.pathname === '/'){
+      fetch(`/api/allProduct?page=${currentPage}`)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then((data) => {
+          setProductAll(prevProducts => [...prevProducts, ...data.allProducts]);
+        })
+        .catch((error) => {
+          console.error('Error fetching data:', error);
+        });
+    }
+  }, [currentPage]);
 
   return (
     <div className={styles.App}>
