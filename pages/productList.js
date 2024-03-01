@@ -2,11 +2,11 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styles from "../styles/ProductList.module.css";
 
-export default function ProductList({ productAll }) {
+export default function ProductList({ productAll, updateCartProduct  }) {
   const [categories, setCategories] = useState([]);
   const [cartProduct, setCartProduct] = useState([]);
 
-  const addToCart = async (product) => {
+  const addToCart = (product) => {
     const cartProduct = JSON.parse(localStorage.getItem("cartProduct")) || [];
     const productExists = cartProduct.some((p) => p.pid === product.pid);
 
@@ -14,6 +14,7 @@ export default function ProductList({ productAll }) {
       const updatedCart = [...cartProduct, product];
       setCartProduct(updatedCart);
       localStorage.setItem("cartProduct", JSON.stringify(updatedCart));
+      updateCartProduct(updatedCart);
     }
   };
 

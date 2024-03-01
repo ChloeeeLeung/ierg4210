@@ -12,6 +12,7 @@ export default function Home({ hierarchicalMenu }) {
   const [categoryAll, setCategoryAll] = useState([]);
   const [productAll, setProductAll] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [cartProduct, setCartProduct] = useState([]);
 
   const searchProduct = async (category) => {
     try {
@@ -94,6 +95,10 @@ export default function Home({ hierarchicalMenu }) {
     }
   }, [currentPage]);
 
+  const updateCartProduct = (updatedCartProduct) => {
+    setCartProduct(updatedCartProduct);
+  };
+
   return (
     <div className={styles.App}>
       <header className={styles.AppHeader}>
@@ -130,7 +135,13 @@ export default function Home({ hierarchicalMenu }) {
             </Link>
           ))}
         </div>
-        <ProductList productAll={productAll} />
+        <div>
+        <h6>Cart</h6>
+        {cartProduct.map((product, index) => (
+          <li key={index}>{product.pid}</li>
+        ))}
+      </div>
+        <ProductList productAll={productAll} updateCartProduct={updateCartProduct} />
       </body>
     </div>
   );
