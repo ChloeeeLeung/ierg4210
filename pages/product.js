@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState} from "react";
 import logo from './assets/logo.jpg';
 import styles from "../styles/Product.module.css";
 import { Link, useLocation } from 'react-router-dom';
@@ -8,8 +8,23 @@ import Cart from './cart.js';
 export default function Product({ hierarchicalMenu }) {
   const location = useLocation();
   const { product } = location?.state;
+  const [cartProduct, setCartProduct] = useState([]);
 
-  console.log(location.pathname);
+  const addToCart = (product) => {
+    const cartProduct = JSON.parse(localStorage.getItem("cartProduct")) || [];
+    const productExists = cartProduct.some((p) => p.pid === product.pid);
+
+    if (!productExists) {
+      const updatedCart = [...cartProduct, product];
+      setCartProduct(updatedCart);
+      localStorage.setItem("cartProduct", JSON.stringify(updatedCart));
+      updateCartProduct(updatedCart);
+    }
+  };
+
+  const updateCartProduct = (updatedCartProduct) => {
+    setCartProduct(updatedCartProduct);
+  };
 
   return (
     <div className={styles.App}>
@@ -21,7 +36,7 @@ export default function Product({ hierarchicalMenu }) {
         <nav className={styles.ShoppingList}>
           <h6 className={styles.ShoppingList}>Shopping List</h6>
           <div className={styles.Submenu}>
-            <Cart/>
+            <Cart updateCart={cartProduct}/>
           </div>
         </nav>
         <nav className={styles.Hierarchical}>
@@ -44,7 +59,7 @@ export default function Product({ hierarchicalMenu }) {
               <h5 className={styles.Inventory}>Only {product.inventory} left!</h5>
             )}
             <h6>Description: {product.description}</h6>
-            <button className={styles.AddToCart}>Add To Cart</button>
+            <button className={styles.AddToCart} onClick={() => addToCart({ pid: product.pid, quantity: 1 })}>Add To Cart</button>
           </dir>
         </div>
       </body>
