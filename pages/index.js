@@ -6,7 +6,7 @@ import logo from './assets/logo.jpg';
 import Image from "next/image";
 import Cart from './cart.js';
 
-export default function Home({ hierarchicalMenu }) {
+export default function Home({ hierarchicalMenu, searchProduct, product }) {
   const location = useLocation();
 
   const [categoryAll, setCategoryAll] = useState([]);
@@ -14,18 +14,18 @@ export default function Home({ hierarchicalMenu }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [cartProduct, setCartProduct] = useState([]);
 
-  const searchProduct = async (category) => {
-    try {
-      const response = await fetch(`/api/product?cid=${category}`, { method: 'GET' });
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      const data = await response.json();
-      setProductAll(data.productAll);
-    } catch (error) {
-      console.error('An error occurred:', error);
-    }
-  };
+  // const searchProduct = async (category) => {
+  //   try {
+  //     const response = await fetch(`/api/product?cid=${category}`, { method: 'GET' });
+  //     if (!response.ok) {
+  //       throw new Error('Network response was not ok');
+  //     }
+  //     const data = await response.json();
+  //     setProductAll(data.productAll);
+  //   } catch (error) {
+  //     console.error('An error occurred:', error);
+  //   }
+  // };
 
   const handleScroll = () => {
     const scrollTop = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
@@ -116,7 +116,7 @@ export default function Home({ hierarchicalMenu }) {
           {hierarchicalMenu.map((item, index) => (
             <React.Fragment key={item.path}>
               {index !== 0 && ' > '}
-              <Link to={item.path} onClick={()=>router.reload()}>
+              <Link to={item.path} onClick={()=>{if(item.path == '/'){router.reload()}}}>
                 {item.name}
               </Link>
             </React.Fragment>
@@ -135,7 +135,7 @@ export default function Home({ hierarchicalMenu }) {
             </Link>
           ))}
         </div>
-        <ProductList productAll={productAll} updateCartProduct={updateCartProduct} />
+        <ProductList productAll={(location.pathname == '/')?productAll:product} updateCartProduct={updateCartProduct} />
       </body>
     </div>
   );

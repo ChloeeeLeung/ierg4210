@@ -1,14 +1,18 @@
-import React,{useState} from "react";
+import React,{useState, useEffect} from "react";
 import logo from './assets/logo.jpg';
 import styles from "../styles/Product.module.css";
 import { Link, useLocation } from 'react-router-dom';
 import Image from "next/image";
 import Cart from './cart.js';
 
-export default function Product({ hierarchicalMenu }) {
+export default function Product({ hierarchicalMenu, searchProduct }) {
   const location = useLocation();
   const { product } = location?.state;
   const [cartProduct, setCartProduct] = useState([]);
+
+  useEffect(() => {
+    searchProduct(product.cid);
+  }, []);
 
   const addToCart = (product) => {
     const cartProduct = JSON.parse(localStorage.getItem("cartProduct")) || [];

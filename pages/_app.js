@@ -8,6 +8,7 @@ import "../styles/globals.css";
 export default function App() {
   const [isServer, setIsServer] = useState(true);
   const [categoryAll, setCategoryAll] = useState([]);
+  const [product, setProduct] = useState([]);
 
   useEffect(() => {
     setIsServer(false);
@@ -32,6 +33,19 @@ export default function App() {
     { name: 'Home', path: '/' },
   ];
 
+  const searchProduct = async (category) => {
+    try {
+      const response = await fetch(`/api/product?cid=${category}`, { method: 'GET' });
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data = await response.json();
+      setProduct(data.productAll);
+    } catch (error) {
+      console.error('An error occurred:', error);
+    }
+  };
+
   return (
     <>
       <Router>
@@ -39,7 +53,9 @@ export default function App() {
           <Route
             exact
             path="/"
-            element={<Home hierarchicalMenu={hierarchicalHomeMenu} />}
+            element={<Home hierarchicalMenu={hierarchicalHomeMenu} 
+            searchProduct={searchProduct} 
+            product={product}/>}
           />
           {categoryAll.map((category) => (
             <Route
@@ -50,6 +66,8 @@ export default function App() {
                     { name: 'Home', path: '/' },
                     { name: category.name, path: `/${category.name}` },
                   ]}
+                  searchProduct={searchProduct}
+                  product={product}
                 />
               }
             />
@@ -65,6 +83,7 @@ export default function App() {
                     { name: `${category.name}`, path: `/${category.name}` },
                     { name: 'Product', path: '' },
                   ]}
+                  searchProduct={searchProduct}
                 />
               }
             />
