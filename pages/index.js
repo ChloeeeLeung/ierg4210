@@ -78,7 +78,7 @@ export default function Home({ hierarchicalMenu }) {
 
   useEffect(() => {
     if(location.pathname === '/'){
-      fetch(`/api/allProduct?page=${currentPage}`)
+      fetch(`/api/allProduct`)
         .then((response) => {
           if (!response.ok) {
             throw new Error('Network response was not ok');
