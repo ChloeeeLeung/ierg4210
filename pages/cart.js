@@ -37,6 +37,7 @@ export default function Cart() {
     const updatedCartList = [...cartList];
     updatedCartList[index].quantity = event.target.value;
     setCartList(updatedCartList);
+    localStorage.setItem("cartProduct", JSON.stringify(cartList));
   };
 
   return (
