@@ -38,7 +38,7 @@ export default function Cart() {
     updatedCartList[index].quantity = event.target.value;
 
     if (updatedCartList[index].quantity === '0') {
-      const filteredCartList = updatedCartList.filter((i) => i !== index);
+      const filteredCartList = updatedCartList.filter((item, i) => i !== index);
       setCartList(filteredCartList);
       localStorage.setItem("cartProduct", JSON.stringify(filteredCartList));
     } else {
