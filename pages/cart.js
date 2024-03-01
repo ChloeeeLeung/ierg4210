@@ -5,6 +5,7 @@ export default function Cart() {
   const [cartList, setCartList] = useState([]);
   const [productNames, setProductNames] = useState([]);
   const [productPrices, setProductPrices] = useState([]);
+  const [totalAmount, setTotalAmount] = useState(0);
 
   useEffect(() => {
     const fetchProductDetail = async () => {
@@ -14,6 +15,8 @@ export default function Cart() {
         setCartList(parsedCartProduct);
         const names = [];
         const prices = [];
+        let total = 0;
+
         for (const cartProduct of parsedCartProduct) {
           const response = await fetch(`/api/productDetail?pid=${cartProduct.pid}`, { method: 'GET' });
           if (!response.ok) {
@@ -24,9 +27,15 @@ export default function Cart() {
           const productPrice = data.productPrice || 'error';
           names.push(productName);
           prices.push(productPrice);
+
+          const quantity = parseInt(cartProduct.quantity, 10);
+          const price = parseFloat(productPrice);
+          total += quantity * price;
         }
+
         setProductNames(names);
         setProductPrices(prices);
+        setTotalAmount(total);
       }
     };
 
@@ -45,6 +54,14 @@ export default function Cart() {
       setCartList(updatedCartList);
       localStorage.setItem("cartProduct", JSON.stringify(updatedCartList));
     }
+
+    let total = 0;
+    for (let i = 0; i < updatedCartList.length; i++) {
+      const quantity = parseInt(updatedCartList[i].quantity, 10);
+      const price = parseFloat(productPrices[i]);
+      total += quantity * price;
+    }
+    setTotalAmount(total);
   };
 
   return (
@@ -63,6 +80,7 @@ export default function Cart() {
         </div>
       ))}
       <hr className={styles.Line} />
+      <h6 className={styles.LeftText}>Total: ${totalAmount}</h6>
       <button className={styles.Checkout}>Checkout</button>
     </div>
   );
