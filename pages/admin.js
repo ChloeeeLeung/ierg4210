@@ -396,7 +396,7 @@ const handleProductImage = (event) => {
               <div className={styles.ImageInput}>
                 <div className={styles.DropImage}>
                   <div className={styles.ImageView}>
-                    <input className={styles.ImageButton} type="file" id="productImage" name="productImage" accept="image/jpeg, image/gif, image/png" onChange={handleProductImage} required hidden/>
+                    <input className={styles.ImageButton} type="file" id="productImage" name="productImage" accept="image/jpeg, image/gif, image/png" onChange={handleProductImage} required/>
                     <h6>Drag and drop your image here.</h6>
                   </div>
                 </div>
