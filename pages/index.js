@@ -109,7 +109,7 @@ export default function Home({ hierarchicalMenu }) {
         <nav className={styles.ShoppingList}>
           <h6 className={styles.ShoppingList}>Shopping List</h6>
           <div className={styles.Submenu}>
-            <Cart/>
+            <Cart updateCart={cartProduct}/>
           </div>
         </nav>
         <nav className={styles.Hierarchical}>
@@ -135,12 +135,6 @@ export default function Home({ hierarchicalMenu }) {
             </Link>
           ))}
         </div>
-        <div>
-        <h6>Cart</h6>
-        {cartProduct.map((product, index) => (
-          <li key={index}>{product.pid}</li>
-        ))}
-      </div>
         <ProductList productAll={productAll} updateCartProduct={updateCartProduct} />
       </body>
     </div>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styles from "../styles/Cart.module.css";
 
-export default function Cart() {
+export default function Cart({updateCart}) {
   const [cartList, setCartList] = useState([]);
   const [productNames, setProductNames] = useState([]);
   const [productPrices, setProductPrices] = useState([]);
@@ -40,7 +40,7 @@ export default function Cart() {
     };
 
     fetchProductDetail();
-  }, []);
+  }, [updateCart]);
 
   const handleQuantityChange = (event, index) => {
     const updatedCartList = [...cartList];
