@@ -11,7 +11,8 @@ export default function handler(req, res) {
                 return;
             }
             const productName = rows.map((row) => row.name);
-            res.status(200).json({ productName });
+            const productPrice = rows.map((row) => row.price);
+            res.status(200).json({ productName, productPrice });
         });
     } catch (error) {
         console.error('An error occurred:', error);

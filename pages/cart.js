@@ -4,14 +4,16 @@ import styles from "../styles/Cart.module.css";
 export default function Cart() {
   const [cartList, setCartList] = useState([]);
   const [productNames, setProductNames] = useState([]);
+  const [productPrices, setProductPrices] = useState([]);
 
   useEffect(() => {
-    const fetchProductNames = async () => {
+    const fetchProductDetail = async () => {
       const cartProduct = localStorage.getItem("cartProduct");
       if (cartProduct) {
         const parsedCartProduct = JSON.parse(cartProduct);
         setCartList(parsedCartProduct);
         const names = [];
+        const prices = [];
         for (const cartProduct of parsedCartProduct) {
           const response = await fetch(`/api/productName?pid=${cartProduct.pid}`, { method: 'GET' });
           if (!response.ok) {
@@ -19,13 +21,16 @@ export default function Cart() {
           }
           const data = await response.json();
           const productName = data.productName || 'error';
+          const productPrice = data.productPrice || 'error';
           names.push(productName);
+          prices.push(productPrice);
         }
         setProductNames(names);
+        setProductPrices(prices);
       }
     };
 
-    fetchProductNames();
+    fetchProductDetail();
   }, []);
 
   const handleQuantityChange = (event, index) => {
@@ -46,7 +51,7 @@ export default function Cart() {
             value={product.quantity}
             onChange={(event) => handleQuantityChange(event, index)}
           />
-          <h6 className={styles.LeftText}>${product.price}</h6>
+          <h6 className={styles.LeftText}>${productPrices[index]}</h6>
         </div>
       ))}
       <hr className={styles.Line} />
