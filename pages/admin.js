@@ -14,6 +14,8 @@ export default function Admin() {
   const [updatePrice, setUpdatePrice] = useState('');
   const [updateInventory, setUpdateInventory] = useState('');
   const [updateImage, setUpdateImage] = useState('');
+  const [adminAccount, setAdminAccount] = useState('');
+  const [adminPassword, setAdminPassword] = useState('');
 
   const handleOldCategoryChange = (event) => {
     setOldCategory(event.target.value);
@@ -27,27 +29,27 @@ export default function Admin() {
     setUpdateItem(event.target.value);
   };
 
-  const handleUpdateCategoryChange  = (event) => {
+  const handleUpdateCategoryChange = (event) => {
     setUpdateCategory(event.target.value);
   };
 
-  const handleUpdateDescriptionChange  = (event) => {
+  const handleUpdateDescriptionChange = (event) => {
     setUpdateDescription(event.target.value);
   };
-  
-  const handleUpdateNameChange  = (event) => {
+
+  const handleUpdateNameChange = (event) => {
     setUpdateName(event.target.value);
   };
 
-  const handleUpdatePriceChange  = (event) => {
+  const handleUpdatePriceChange = (event) => {
     setUpdatePrice(event.target.value);
   };
 
-  const handleUpdateInventoryChange  = (event) => {
+  const handleUpdateInventoryChange = (event) => {
     setUpdateInventory(event.target.value);
   };
 
-  const handleUpdateImageChange  = (event) => {
+  const handleUpdateImageChange = (event) => {
     setUpdateImage(event.target.value);
   };
 
@@ -66,7 +68,7 @@ export default function Admin() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ delCategory }), 
+        body: JSON.stringify({ delCategory }),
       });
 
       if (response.ok) {
@@ -86,7 +88,7 @@ export default function Admin() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ updateCategory, oldCategory }), 
+        body: JSON.stringify({ updateCategory, oldCategory }),
       });
 
       if (response.ok) {
@@ -107,7 +109,7 @@ export default function Admin() {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ updateDescription, oldProduct }), 
+          body: JSON.stringify({ updateDescription, oldProduct }),
         });
 
         if (response.ok) {
@@ -125,7 +127,7 @@ export default function Admin() {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ updateName, oldProduct }), 
+          body: JSON.stringify({ updateName, oldProduct }),
         });
 
         if (response.ok) {
@@ -136,14 +138,14 @@ export default function Admin() {
       } catch (error) {
         console.error('An error occurred:', error);
       }
-    }else if (updateItem === 'price') {
+    } else if (updateItem === 'price') {
       try {
         const response = await fetch('/api/updatePrice', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ updatePrice, oldProduct }), 
+          body: JSON.stringify({ updatePrice, oldProduct }),
         });
 
         if (response.ok) {
@@ -154,14 +156,14 @@ export default function Admin() {
       } catch (error) {
         console.error('An error occurred:', error);
       }
-    }else if (updateItem === 'inventory') {
+    } else if (updateItem === 'inventory') {
       try {
         const response = await fetch('/api/updateInventory', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ updateInventory, oldProduct }), 
+          body: JSON.stringify({ updateInventory, oldProduct }),
         });
 
         if (response.ok) {
@@ -172,14 +174,14 @@ export default function Admin() {
       } catch (error) {
         console.error('An error occurred:', error);
       }
-    }else if (updateItem === 'image') {
+    } else if (updateItem === 'image') {
       try {
         const response = await fetch('/api/updateImage', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ updateImage, oldProduct }), 
+          body: JSON.stringify({ updateImage, oldProduct }),
         });
 
         if (response.ok) {
@@ -191,7 +193,7 @@ export default function Admin() {
         console.error('An error occurred:', error);
       }
     }
-    
+
   };
 
   const handleDelProductClick = async () => {
@@ -201,7 +203,7 @@ export default function Admin() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ delProduct }), 
+        body: JSON.stringify({ delProduct }),
       });
 
       if (response.ok) {
@@ -225,7 +227,7 @@ export default function Admin() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ newCategory }), 
+        body: JSON.stringify({ newCategory }),
       });
 
       if (response.ok) {
@@ -241,7 +243,7 @@ export default function Admin() {
   const [categoryAll, setCategoryAll] = useState([]);
   const [productAll, setProductAll] = useState([]);
 
-   useEffect(() => {
+  useEffect(() => {
     fetch('/api/category')
       .then((response) => {
         if (!response.ok) {
@@ -268,15 +270,15 @@ export default function Admin() {
       .catch((error) => {
         console.error('Error fetching data:', error);
       });
-   }, []); 
-  
+  }, []);
+
   const [productName, setProductName] = useState('');
   const [productPrice, setProductPrice] = useState(undefined);
   const [productInventory, setProductInventory] = useState(undefined);
   const [productDescription, setProductDescription] = useState('');
   const [productImage, setProductImage] = useState(undefined);
   const [newProductCategory, setNewProductCategory] = useState('');
-  
+
   const handleProductName = (event) => {
     setProductName(event.target.value);
   };
@@ -290,42 +292,42 @@ export default function Admin() {
     setProductDescription(event.target.value);
   };
 
-const handleProductImage = (event) => {
-  const file = event.target.files[0];
-  if (file) {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const img = new Image();
-      img.src = e.target.result;
-      img.onload = () => {
-        const canvas = document.createElement('canvas');
-        const MAX_WIDTH = 300; 
-        const MAX_HEIGHT = 300; 
-        let width = img.width;
-        let height = img.height;
+  const handleProductImage = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.src = e.target.result;
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          const MAX_WIDTH = 300;
+          const MAX_HEIGHT = 300;
+          let width = img.width;
+          let height = img.height;
 
-        if (width > height && width > MAX_WIDTH) {
-          height *= MAX_WIDTH / width;
-          width = MAX_WIDTH;
-        } else if (height > MAX_HEIGHT) {
-          width *= MAX_HEIGHT / height;
-          height = MAX_HEIGHT;
-        }
+          if (width > height && width > MAX_WIDTH) {
+            height *= MAX_WIDTH / width;
+            width = MAX_WIDTH;
+          } else if (height > MAX_HEIGHT) {
+            width *= MAX_HEIGHT / height;
+            height = MAX_HEIGHT;
+          }
 
-        canvas.width = width;
-        canvas.height = height;
+          canvas.width = width;
+          canvas.height = height;
 
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(img, 0, 0, width, height);
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
 
-        const resizedDataURL = canvas.toDataURL('image/jpeg', 0.7);
+          const resizedDataURL = canvas.toDataURL('image/jpeg', 0.7);
 
-        setProductImage(resizedDataURL);
+          setProductImage(resizedDataURL);
+        };
       };
-    };
-    reader.readAsDataURL(file);
-  }
-};
+      reader.readAsDataURL(file);
+    }
+  };
 
   const handleNewProductCategory = (event) => {
     setNewProductCategory(event.target.value);
@@ -338,7 +340,7 @@ const handleProductImage = (event) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ productName, productPrice, productInventory, productDescription, productImage, newProductCategory }), 
+        body: JSON.stringify({ productName, productPrice, productInventory, productDescription, productImage, newProductCategory }),
       });
 
       if (response.ok) {
@@ -351,6 +353,25 @@ const handleProductImage = (event) => {
     }
   };
 
+  const handleAdminAccountChange = (event) => {
+    setAdminAccount(event.target.value);
+  };
+
+  const handleAdminPasswordChange = (event) => {
+    setAdminPassword(event.target.value);
+  };
+
+  const [login, setLogin] = useState(false);
+  const [error, setError] = useState('');
+
+  const handleLoginClick = () => {
+    if (adminAccount === 'iamadmin' && adminPassword === 'password') {
+      setLogin(true);
+    } else {
+      setLogin(false);
+      setError('Wrong account or wrong password. Please try again.');
+    }
+  };
 
   return (
     <div className={styles.App}>
@@ -358,131 +379,147 @@ const handleProductImage = (event) => {
         <h4>CERAMIC WORLD - ADMIN PANEL</h4>
       </header>
       <body className={styles.AppBody}>
-        <div>
-    </div>
-        <br></br>
-        <div className={styles.Row}>
-          <div className={styles.Column}>
-            <h5 className={styles.Title}>New Category</h5>
-            <form> 
-              <label className={styles.Label}>Name </label>
-              <input type="text" id="newCategory" name="newCategory" value={newCategory} onChange={handleNewCategoryChange} required/>
-              <br></br>
-              <button className={styles.Submit} onClick={handleNewCategoryClick}>Submit</button>
-            </form>
+        {login === false && (
+          <div>
+            <label className={styles.Error}>{error}</label>
+            <br></br>
+            <label className={styles.Label}>Admin Account </label>
+            <input type="text" id="adminAccount" name="adminAccount" value={adminAccount} onChange={handleAdminAccountChange} required />
+            <br></br>
+            <label className={styles.Label}>Admin Password </label>
+            <input type="text" id="adminPassword" name="adminPassword" value={adminPassword} onChange={handleAdminPasswordChange} required />
+            <br></br>
+            <button className={styles.Submit} onClick={handleLoginClick}>Login</button>
           </div>
-          <div className={styles.Column}>
-            <h5 className={styles.Title}>New Product</h5>
-            <form>
-              <label className={styles.Label}>Category </label>
-              <select className={styles.Select} name="newProductCategory" id="newProductCategory" onChange={handleNewProductCategory} required> 
-                {categoryAll.map((category) => (
-                  <option key={category.cid} value={category.cid}>{category.name}</option> 
-                ))}
-              </select>
-              <br></br>
-              <label className={styles.Label}>Name</label>
-              <input type="text" id="productName" name="productName" onChange={handleProductName} required/>
-              <br></br>
-              <label className={styles.Label}>Price </label>
-              <input type="number" id="productPrice" name="productPrice" onChange={handleProductPrice} required/>
-              <br></br>
-              <label className={styles.Label}>Inventory </label>
-              <input type="number" id="productInventory" name="productInventory" onChange={handleProductInventory} required/>
-              <br></br>
-              <label className={styles.Label}>Description </label>
-              <textarea type="text" id="productDescription" name="productDescription" onChange={handleProductDescription} required/>
-              <br></br>
-              <div className={styles.ImageInput}>
-                <div className={styles.DropImage}>
-                  <div className={styles.ImageView}>
-                    <input className={styles.ImageButton} type="file" id="productImage" name="productImage" accept="image/jpeg, image/gif, image/png" onChange={handleProductImage} required/>
-                    <h6>Drag and drop your image here.</h6>
-                  </div>
-                </div>
+        )}
+        {login === true && (
+          <dir>
+            <br></br>
+            <div className={styles.Row}>
+              <div className={styles.Column}>
+                <h5 className={styles.Title}>New Category</h5>
+                <form>
+                  <label className={styles.Label}>Name </label>
+                  <input type="text" id="newCategory" name="newCategory" value={newCategory} onChange={handleNewCategoryChange} required />
+                  <br></br>
+                  <button className={styles.Submit} onClick={handleNewCategoryClick}>Submit</button>
+                </form>
               </div>
-              <br></br>
-              <button className={styles.Submit} onClick={handleNewProductClick}>Submit</button>
-            </form>
-          </div>
-        </div>
-        <br></br>
-        <div className={styles.Row}>
-          <div className={styles.Column}>
-            <h5 className={styles.Title}>Delete Category</h5>
-            <form>
-              <label className={styles.Label}>Category </label>
-              <select className={styles.Select } name="category" id="category" onChange={handleDelCategoryChange} required> 
-                {categoryAll.map((category) => (
-                  <option key={category.name} value={category.name}>{category.name}</option> 
-                ))}
-              </select>
-              <br></br>
-              <button className={styles.Submit} onClick={handleDelCategoryClick}>Submit</button>
-            </form>
-          </div>
-          <div className={styles.Column}>
-            <h5 className={styles.Title}>Delete Product</h5>
-            <form>
-              <label className={styles.Label}>Produtc Name </label>
-              <select className={styles.Select} name="product" id="product" onChange={handleDelProductChange} required> 
-                {productAll.map((product) => (
-                  <option key={product.pid} value={product.name}>{product.name}</option> 
-                ))} 
-              </select>
-              <br></br>
-              <button className={styles.Submit} onClick={handleDelProductClick}>Submit</button>
-            </form>
-          </div>
-        </div>
-        <br></br>
-        <div className={styles.Row}>
-          <div className={styles.Column}>
-            <h5 className={styles.Title}>Update Category</h5>
-            <form>
-              <label className={styles.Label}>Category Name </label>
-              <select className={styles.Select} name="oldCategory" id="oldCategory" onChange={handleOldCategoryChange} required> 
-                {categoryAll.map((category) => (
-                  <option key={category.name} value={category.name}>{category.name}</option> 
-                ))}
-              </select>
-              <br />
-              <label className={styles.Label}>Update Category Name</label>
-              <input type="text" id="updateCategory" name="updateCategory" value={updateCategory} onChange={handleUpdateCategoryChange} required/>
-              <br></br>
-              <button className={styles.Submit} onClick={handleUpdateCategory}>Submit</button>
-            </form>
-          </div>
-          <div className={styles.Column}>
-            <h5 className={styles.Title}>Update Product</h5>
-            <form>
-              <label className={styles.Label}>Category Name </label>
-              <select className={styles.Select} name="oldProduct" id="oldProduct" onChange={handleOldProductChange} required> 
-                {productAll.map((category) => (
-                  <option key={category.name} value={category.name}>{category.name}</option> 
-                ))}
-              </select>
-              <br />
-              <label className={styles.Label}>Update Item </label>
-              <select className={styles.Select} name="updateItem" id="updateItem" onChange={handlUpdateItemChange} required> 
-                <option key='name' value='name'>name</option> 
-                <option key='price' value='price'>price</option> 
-                <option key='description' value='description'>description</option> 
-                <option key='inventory' value='inventory'>inventory</option> 
-                <option key='image' value='image'>image</option> 
-              </select>
-              <br />
-              <label className={styles.Label}>Update Value </label>
-              {(updateItem === 'description')?<textarea type="text" id="updateDescription" name="updateDescription" onChange={handleUpdateDescriptionChange} required/>:null}
-              {(updateItem === 'name')?<input type="text" id="updateName" name="updateName" onChange={handleUpdateNameChange} required/>:null}
-              {(updateItem === 'price')?<input type="number" id="updatePrice" name="updatePrice" onChange={handleUpdatePriceChange} required/>:null}
-              {(updateItem === 'inventory')?<input type="number" id="updateInventory" name="updateInventory" onChange={handleUpdateInventoryChange} required/>:null}
-              {(updateItem === 'image')?<input className={styles.ImageButton} type="file" id="updateImage" name="updateImage" accept="image/jpeg, image/gif, image/png" onChange={handleUpdateImageChange} required />:null}
-              <br />
-              <button className={styles.Submit} onClick={handleUpdateProduct}>Submit</button>
-            </form>
-          </div>
-        </div>
+              <div className={styles.Column}>
+                <h5 className={styles.Title}>New Product</h5>
+                <form>
+                  <label className={styles.Label}>Category </label>
+                  <select className={styles.Select} name="newProductCategory" id="newProductCategory" onChange={handleNewProductCategory} required>
+                    {categoryAll.map((category) => (
+                      <option key={category.cid} value={category.cid}>{category.name}</option>
+                    ))}
+                  </select>
+                  <br></br>
+                  <label className={styles.Label}>Name</label>
+                  <input type="text" id="productName" name="productName" onChange={handleProductName} required />
+                  <br></br>
+                  <label className={styles.Label}>Price </label>
+                  <input type="number" id="productPrice" name="productPrice" onChange={handleProductPrice} required />
+                  <br></br>
+                  <label className={styles.Label}>Inventory </label>
+                  <input type="number" id="productInventory" name="productInventory" onChange={handleProductInventory} required />
+                  <br></br>
+                  <label className={styles.Label}>Description </label>
+                  <textarea type="text" id="productDescription" name="productDescription" onChange={handleProductDescription} required />
+                  <br></br>
+                  <div className={styles.ImageInput}>
+                    <div className={styles.DropImage}>
+                      <div className={styles.ImageView}>
+                        <input className={styles.ImageButton} type="file" id="productImage" name="productImage" accept="image/jpeg, image/gif, image/png" onChange={handleProductImage} required />
+                        <h6>Drag and drop your image here.</h6>
+                      </div>
+                    </div>
+                  </div>
+                  <br></br>
+                  <button className={styles.Submit} onClick={handleNewProductClick}>Submit</button>
+                </form>
+              </div>
+            </div>
+            <br></br>
+            <div className={styles.Row}>
+              <div className={styles.Column}>
+                <h5 className={styles.Title}>Delete Category</h5>
+                <form>
+                  <label className={styles.Label}>Category </label>
+                  <select className={styles.Select} name="category" id="category" onChange={handleDelCategoryChange} required>
+                    {categoryAll.map((category) => (
+                      <option key={category.name} value={category.name}>{category.name}</option>
+                    ))}
+                  </select>
+                  <br></br>
+                  <button className={styles.Submit} onClick={handleDelCategoryClick}>Submit</button>
+                </form>
+              </div>
+              <div className={styles.Column}>
+                <h5 className={styles.Title}>Delete Product</h5>
+                <form>
+                  <label className={styles.Label}>Produtc Name </label>
+                  <select className={styles.Select} name="product" id="product" onChange={handleDelProductChange} required>
+                    {productAll.map((product) => (
+                      <option key={product.pid} value={product.name}>{product.name}</option>
+                    ))}
+                  </select>
+                  <br></br>
+                  <button className={styles.Submit} onClick={handleDelProductClick}>Submit</button>
+                </form>
+              </div>
+            </div>
+            <br></br>
+            <div className={styles.Row}>
+              <div className={styles.Column}>
+                <h5 className={styles.Title}>Update Category</h5>
+                <form>
+                  <label className={styles.Label}>Category Name </label>
+                  <select className={styles.Select} name="oldCategory" id="oldCategory" onChange={handleOldCategoryChange} required>
+                    {categoryAll.map((category) => (
+                      <option key={category.name} value={category.name}>{category.name}</option>
+                    ))}
+                  </select>
+                  <br />
+                  <label className={styles.Label}>Update Category Name</label>
+                  <input type="text" id="updateCategory" name="updateCategory" value={updateCategory} onChange={handleUpdateCategoryChange} required />
+                  <br></br>
+                  <button className={styles.Submit} onClick={handleUpdateCategory}>Submit</button>
+                </form>
+              </div>
+              <div className={styles.Column}>
+                <h5 className={styles.Title}>Update Product</h5>
+                <form>
+                  <label className={styles.Label}>Category Name </label>
+                  <select className={styles.Select} name="oldProduct" id="oldProduct" onChange={handleOldProductChange} required>
+                    {productAll.map((category) => (
+                      <option key={category.name} value={category.name}>{category.name}</option>
+                    ))}
+                  </select>
+                  <br />
+                  <label className={styles.Label}>Update Item </label>
+                  <select className={styles.Select} name="updateItem" id="updateItem" onChange={handlUpdateItemChange} required>
+                    <option key='name' value='name'>name</option>
+                    <option key='price' value='price'>price</option>
+                    <option key='description' value='description'>description</option>
+                    <option key='inventory' value='inventory'>inventory</option>
+                    <option key='image' value='image'>image</option>
+                  </select>
+                  <br />
+                  <label className={styles.Label}>Update Value </label>
+                  {(updateItem === 'description') ? <textarea type="text" id="updateDescription" name="updateDescription" onChange={handleUpdateDescriptionChange} required /> : null}
+                  {(updateItem === 'name') ? <input type="text" id="updateName" name="updateName" onChange={handleUpdateNameChange} required /> : null}
+                  {(updateItem === 'price') ? <input type="number" id="updatePrice" name="updatePrice" onChange={handleUpdatePriceChange} required /> : null}
+                  {(updateItem === 'inventory') ? <input type="number" id="updateInventory" name="updateInventory" onChange={handleUpdateInventoryChange} required /> : null}
+                  {(updateItem === 'image') ? <input className={styles.ImageButton} type="file" id="updateImage" name="updateImage" accept="image/jpeg, image/gif, image/png" onChange={handleUpdateImageChange} required /> : null}
+                  <br />
+                  <button className={styles.Submit} onClick={handleUpdateProduct}>Submit</button>
+                </form>
+              </div>
+            </div>
+          </dir>
+        )}
+
       </body>
     </div>
   );
