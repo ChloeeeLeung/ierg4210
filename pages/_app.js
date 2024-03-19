@@ -53,12 +53,11 @@ export default function App() {
           <Route
             exact
             path="/"
-            element={<Home hierarchicalMenu={hierarchicalHomeMenu} 
-            searchProduct={searchProduct} 
-            product={product}/>}
+            element={<Home hierarchicalMenu={hierarchicalHomeMenu} searchProduct={searchProduct} product={product} />}
           />
           {categoryAll.map((category) => (
             <Route
+              key={category.name}
               path={`${category.name}`}
               element={
                 <Home
@@ -74,7 +73,7 @@ export default function App() {
           ))}
           {categoryAll.map((category) => (
             <Route
-              key={category.name}
+              key={category.name} 
               path={`/${category.name}/:product`}
               element={
                 <Product

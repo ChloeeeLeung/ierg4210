@@ -124,7 +124,7 @@ export default function Home({ hierarchicalMenu, searchProduct, product }) {
         </nav>
         <div className={styles.Row}>
           {categoryAll.map((category) => (
-            <Link to={`/${category.name}`}>
+            <Link to={`/${category.name}`} key={category.name}>
               <button
                 className={styles.CategoriesButton}
                 value={category.name}
