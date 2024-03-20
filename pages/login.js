@@ -33,7 +33,11 @@ setSalt(storedSalt);
 
 const combinedHash = storedSalt + userPassword;
 
-bcrypt.compareSync(userPassword, storedPassword[0], function(err, result) {
+bcrypt.compare(userPassword, storedPassword[0], function(err, result) {
+    if (err) {
+    console.error('Error during comparison:', err);
+    return;
+  }
   if (result === true) {
     console.log('Password is correct.');
   } else {
@@ -44,12 +48,11 @@ bcrypt.compareSync(userPassword, storedPassword[0], function(err, result) {
 
 };
 
-  const handleRegisterClick = async () => {
-    const salt = bcrypt.genSaltSync(10);
-    const combinedValue = salt + userPassword;
-    const hashedPassword = bcrypt.hashSync(combinedValue, 10);
-    console.log(hashedPassword);
-    try {
+  const handleRegisterClick = () => {
+    bcrypt.genSalt(10, function(err, salt) {
+    bcrypt.hash(userPassword, salt, async function(err, hash) {
+        const hashedPassword = hash;
+      try {
       const response = await fetch('/api/register', {
         method: 'POST',
         headers: {
@@ -66,6 +69,29 @@ bcrypt.compareSync(userPassword, storedPassword[0], function(err, result) {
     } catch (error) {
       console.error('An error occurred:', error);
     }
+    });
+  });
+    // const salt = bcrypt.genSaltSync(10);
+    // const combinedValue = salt + userPassword;
+    // const hashedPassword = bcrypt.hashSync(combinedValue, 10);
+    // console.log(hashedPassword);
+    // try {
+    //   const response = await fetch('/api/register', {
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //     },
+    //     body: JSON.stringify({ userName, userPassword, hashedPassword, admin: true, salt }),
+    //   });
+
+    //   if (response.ok) {
+    //     console.log('Register successfully!');
+    //   } else {
+    //     console.error('Error login:', response.statusText);
+    //   }
+    // } catch (error) {
+    //   console.error('An error occurred:', error);
+    // }
   };
 
   return (
