@@ -31,6 +31,7 @@
 
 .Row {
   margin: 10px;
+  display: flex;
   flex-direction: row;
 }
 
@@ -112,4 +113,21 @@
 
 .QuantityInput {
   width: 50px;
+}
+
+.Welcome {
+  color: #3D2C2E;
+  margin: 10px;
+  font-size: large;
+  font-weight: 600;
+}
+
+.LoginButton {
+  padding: 5px 10px;
+  background-color: #886F68;
+  color: #F5EDF0;
+  border-radius: 5px;
+  border: 1;
+  border-color: white;
+  width: 20vh;
 }

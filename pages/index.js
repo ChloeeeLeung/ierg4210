@@ -106,6 +106,14 @@ export default function Home({ hierarchicalMenu, searchProduct, product }) {
         <h4>CERAMIC WORLD</h4>
       </header>
       <body className={styles.AppBody}>
+        <div className={styles.Row}>
+          <p className={styles.Welcome}>Welcome Back, Guest</p>
+          <Link to='/login'>
+            <button className={styles.LoginButton}>
+              Login
+            </button>
+          </Link>
+        </div>
         <nav className={styles.ShoppingList}>
           <h6 className={styles.ShoppingList}>Shopping List</h6>
           <div className={styles.Submenu}>

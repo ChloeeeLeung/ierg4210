@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import Home from "./index.js";
 import Product from "./product.js";
 import Admin from "./admin.js";
+import Login from "./login.js";
 import "../styles/globals.css";
 
 export default function App() {
@@ -89,6 +90,7 @@ export default function App() {
           ))}
           <Route path="*" element={<Navigate to="/" />} />
           <Route exact path="/admin" element={<Admin />} />
+          <Route path="/login" element={<Login />} />
         </Routes>
       </Router>
     </>
