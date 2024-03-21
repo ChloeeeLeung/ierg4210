@@ -11,8 +11,8 @@ export default function handler(req, res) {
                 return;
             }
             const password = rows.map((row) => row.password);
-            const salt = rows.map((row) => row.salt);
-            res.status(200).json({ password, salt });
+            const isAdmin = rows.map((row) => row.isAdmin);
+            res.status(200).json({ password, isAdmin });
         });
   } catch (error) {
     console.error(error);

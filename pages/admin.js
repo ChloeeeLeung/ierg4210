@@ -14,8 +14,6 @@ export default function Admin() {
   const [updatePrice, setUpdatePrice] = useState('');
   const [updateInventory, setUpdateInventory] = useState('');
   const [updateImage, setUpdateImage] = useState('');
-  const [adminAccount, setAdminAccount] = useState('');
-  const [adminPassword, setAdminPassword] = useState('');
 
   const handleOldCategoryChange = (event) => {
     setOldCategory(event.target.value);
@@ -353,173 +351,137 @@ export default function Admin() {
     }
   };
 
-  const handleAdminAccountChange = (event) => {
-    setAdminAccount(event.target.value);
-  };
-
-  const handleAdminPasswordChange = (event) => {
-    setAdminPassword(event.target.value);
-  };
-
-  const [login, setLogin] = useState(false);
-  const [error, setError] = useState('');
-
-  const handleLoginClick = () => {
-    if (adminAccount === 'iamadmin' && adminPassword === 'password') {
-      setLogin(true);
-    } else {
-      setLogin(false);
-      setError('Wrong account or wrong password. Please try again.');
-    }
-  };
-
   return (
     <div className={styles.App}>
       <header className={styles.AppHeader}>
         <h4>CERAMIC WORLD - ADMIN PANEL</h4>
       </header>
       <body className={styles.AppBody}>
-        {login === false && (
-          <div>
-            <label className={styles.Error}>{error}</label>
-            <br></br>
-            <label className={styles.Label}>Admin Account </label>
-            <input type="text" id="adminAccount" name="adminAccount" value={adminAccount} onChange={handleAdminAccountChange} required />
-            <br></br>
-            <label className={styles.Label}>Admin Password </label>
-            <input type="text" id="adminPassword" name="adminPassword" value={adminPassword} onChange={handleAdminPasswordChange} required />
-            <br></br>
-            <button className={styles.Submit} onClick={handleLoginClick}>Login</button>
-          </div>
-        )}
-        {login === true && (
-          <dir>
-            <br></br>
-            <div className={styles.Row}>
-              <div className={styles.Column}>
-                <h5 className={styles.Title}>New Category</h5>
-                <form>
-                  <label className={styles.Label}>Name </label>
-                  <input type="text" id="newCategory" name="newCategory" value={newCategory} onChange={handleNewCategoryChange} required />
-                  <br></br>
-                  <button className={styles.Submit} onClick={handleNewCategoryClick}>Submit</button>
-                </form>
-              </div>
-              <div className={styles.Column}>
-                <h5 className={styles.Title}>New Product</h5>
-                <form>
-                  <label className={styles.Label}>Category </label>
-                  <select className={styles.Select} name="newProductCategory" id="newProductCategory" onChange={handleNewProductCategory} required>
-                    {categoryAll.map((category) => (
-                      <option key={category.cid} value={category.cid}>{category.name}</option>
-                    ))}
-                  </select>
-                  <br></br>
-                  <label className={styles.Label}>Name</label>
-                  <input type="text" id="productName" name="productName" onChange={handleProductName} required />
-                  <br></br>
-                  <label className={styles.Label}>Price </label>
-                  <input type="number" id="productPrice" name="productPrice" onChange={handleProductPrice} required />
-                  <br></br>
-                  <label className={styles.Label}>Inventory </label>
-                  <input type="number" id="productInventory" name="productInventory" onChange={handleProductInventory} required />
-                  <br></br>
-                  <label className={styles.Label}>Description </label>
-                  <textarea type="text" id="productDescription" name="productDescription" onChange={handleProductDescription} required />
-                  <br></br>
-                  <div className={styles.ImageInput}>
-                    <div className={styles.DropImage}>
-                      <div className={styles.ImageView}>
-                        <input className={styles.ImageButton} type="file" id="productImage" name="productImage" accept="image/jpeg, image/gif, image/png" onChange={handleProductImage} required />
-                        <h6>Drag and drop your image here.</h6>
-                      </div>
+        <dir>
+          <br></br>
+          <div className={styles.Row}>
+            <div className={styles.Column}>
+              <h5 className={styles.Title}>New Category</h5>
+              <form>
+                <label className={styles.Label}>Name </label>
+                <input type="text" id="newCategory" name="newCategory" value={newCategory} onChange={handleNewCategoryChange} required />
+                <br></br>
+                <button className={styles.Submit} onClick={handleNewCategoryClick}>Submit</button>
+              </form>
+            </div>
+            <div className={styles.Column}>
+              <h5 className={styles.Title}>New Product</h5>
+              <form>
+                <label className={styles.Label}>Category </label>
+                <select className={styles.Select} name="newProductCategory" id="newProductCategory" onChange={handleNewProductCategory} required>
+                  {categoryAll.map((category) => (
+                    <option key={category.cid} value={category.cid}>{category.name}</option>
+                  ))}
+                </select>
+                <br></br>
+                <label className={styles.Label}>Name</label>
+                <input type="text" id="productName" name="productName" onChange={handleProductName} required />
+                <br></br>
+                <label className={styles.Label}>Price </label>
+                <input type="number" id="productPrice" name="productPrice" onChange={handleProductPrice} required />
+                <br></br>
+                <label className={styles.Label}>Inventory </label>
+                <input type="number" id="productInventory" name="productInventory" onChange={handleProductInventory} required />
+                <br></br>
+                <label className={styles.Label}>Description </label>
+                <textarea type="text" id="productDescription" name="productDescription" onChange={handleProductDescription} required />
+                <br></br>
+                <div className={styles.ImageInput}>
+                  <div className={styles.DropImage}>
+                    <div className={styles.ImageView}>
+                      <input className={styles.ImageButton} type="file" id="productImage" name="productImage" accept="image/jpeg, image/gif, image/png" onChange={handleProductImage} required />
+                      <h6>Drag and drop your image here.</h6>
                     </div>
                   </div>
-                  <br></br>
-                  <button className={styles.Submit} onClick={handleNewProductClick}>Submit</button>
-                </form>
-              </div>
+                </div>
+                <br></br>
+                <button className={styles.Submit} onClick={handleNewProductClick}>Submit</button>
+              </form>
             </div>
-            <br></br>
-            <div className={styles.Row}>
-              <div className={styles.Column}>
-                <h5 className={styles.Title}>Delete Category</h5>
-                <form>
-                  <label className={styles.Label}>Category </label>
-                  <select className={styles.Select} name="category" id="category" onChange={handleDelCategoryChange} required>
-                    {categoryAll.map((category) => (
-                      <option key={category.name} value={category.name}>{category.name}</option>
-                    ))}
-                  </select>
-                  <br></br>
-                  <button className={styles.Submit} onClick={handleDelCategoryClick}>Submit</button>
-                </form>
-              </div>
-              <div className={styles.Column}>
-                <h5 className={styles.Title}>Delete Product</h5>
-                <form>
-                  <label className={styles.Label}>Produtc Name </label>
-                  <select className={styles.Select} name="product" id="product" onChange={handleDelProductChange} required>
-                    {productAll.map((product) => (
-                      <option key={product.pid} value={product.name}>{product.name}</option>
-                    ))}
-                  </select>
-                  <br></br>
-                  <button className={styles.Submit} onClick={handleDelProductClick}>Submit</button>
-                </form>
-              </div>
+          </div>
+          <br></br>
+          <div className={styles.Row}>
+            <div className={styles.Column}>
+              <h5 className={styles.Title}>Delete Category</h5>
+              <form>
+                <label className={styles.Label}>Category </label>
+                <select className={styles.Select} name="category" id="category" onChange={handleDelCategoryChange} required>
+                  {categoryAll.map((category) => (
+                    <option key={category.name} value={category.name}>{category.name}</option>
+                  ))}
+                </select>
+                <br></br>
+                <button className={styles.Submit} onClick={handleDelCategoryClick}>Submit</button>
+              </form>
             </div>
-            <br></br>
-            <div className={styles.Row}>
-              <div className={styles.Column}>
-                <h5 className={styles.Title}>Update Category</h5>
-                <form>
-                  <label className={styles.Label}>Category Name </label>
-                  <select className={styles.Select} name="oldCategory" id="oldCategory" onChange={handleOldCategoryChange} required>
-                    {categoryAll.map((category) => (
-                      <option key={category.name} value={category.name}>{category.name}</option>
-                    ))}
-                  </select>
-                  <br />
-                  <label className={styles.Label}>Update Category Name</label>
-                  <input type="text" id="updateCategory" name="updateCategory" value={updateCategory} onChange={handleUpdateCategoryChange} required />
-                  <br></br>
-                  <button className={styles.Submit} onClick={handleUpdateCategory}>Submit</button>
-                </form>
-              </div>
-              <div className={styles.Column}>
-                <h5 className={styles.Title}>Update Product</h5>
-                <form>
-                  <label className={styles.Label}>Category Name </label>
-                  <select className={styles.Select} name="oldProduct" id="oldProduct" onChange={handleOldProductChange} required>
-                    {productAll.map((category) => (
-                      <option key={category.name} value={category.name}>{category.name}</option>
-                    ))}
-                  </select>
-                  <br />
-                  <label className={styles.Label}>Update Item </label>
-                  <select className={styles.Select} name="updateItem" id="updateItem" onChange={handlUpdateItemChange} required>
-                    <option key='name' value='name'>name</option>
-                    <option key='price' value='price'>price</option>
-                    <option key='description' value='description'>description</option>
-                    <option key='inventory' value='inventory'>inventory</option>
-                    <option key='image' value='image'>image</option>
-                  </select>
-                  <br />
-                  <label className={styles.Label}>Update Value </label>
-                  {(updateItem === 'description') ? <textarea type="text" id="updateDescription" name="updateDescription" onChange={handleUpdateDescriptionChange} required /> : null}
-                  {(updateItem === 'name') ? <input type="text" id="updateName" name="updateName" onChange={handleUpdateNameChange} required /> : null}
-                  {(updateItem === 'price') ? <input type="number" id="updatePrice" name="updatePrice" onChange={handleUpdatePriceChange} required /> : null}
-                  {(updateItem === 'inventory') ? <input type="number" id="updateInventory" name="updateInventory" onChange={handleUpdateInventoryChange} required /> : null}
-                  {(updateItem === 'image') ? <input className={styles.ImageButton} type="file" id="updateImage" name="updateImage" accept="image/jpeg, image/gif, image/png" onChange={handleUpdateImageChange} required /> : null}
-                  <br />
-                  <button className={styles.Submit} onClick={handleUpdateProduct}>Submit</button>
-                </form>
-              </div>
+            <div className={styles.Column}>
+              <h5 className={styles.Title}>Delete Product</h5>
+              <form>
+                <label className={styles.Label}>Produtc Name </label>
+                <select className={styles.Select} name="product" id="product" onChange={handleDelProductChange} required>
+                  {productAll.map((product) => (
+                    <option key={product.pid} value={product.name}>{product.name}</option>
+                  ))}
+                </select>
+                <br></br>
+                <button className={styles.Submit} onClick={handleDelProductClick}>Submit</button>
+              </form>
             </div>
-          </dir>
-        )}
-
+          </div>
+          <br></br>
+          <div className={styles.Row}>
+            <div className={styles.Column}>
+              <h5 className={styles.Title}>Update Category</h5>
+              <form>
+                <label className={styles.Label}>Category Name </label>
+                <select className={styles.Select} name="oldCategory" id="oldCategory" onChange={handleOldCategoryChange} required>
+                  {categoryAll.map((category) => (
+                    <option key={category.name} value={category.name}>{category.name}</option>
+                  ))}
+                </select>
+                <br />
+                <label className={styles.Label}>Update Category Name</label>
+                <input type="text" id="updateCategory" name="updateCategory" value={updateCategory} onChange={handleUpdateCategoryChange} required />
+                <br></br>
+                <button className={styles.Submit} onClick={handleUpdateCategory}>Submit</button>
+              </form>
+            </div>
+            <div className={styles.Column}>
+              <h5 className={styles.Title}>Update Product</h5>
+              <form>
+                <label className={styles.Label}>Category Name </label>
+                <select className={styles.Select} name="oldProduct" id="oldProduct" onChange={handleOldProductChange} required>
+                  {productAll.map((category) => (
+                    <option key={category.name} value={category.name}>{category.name}</option>
+                  ))}
+                </select>
+                <br />
+                <label className={styles.Label}>Update Item </label>
+                <select className={styles.Select} name="updateItem" id="updateItem" onChange={handlUpdateItemChange} required>
+                  <option key='name' value='name'>name</option>
+                  <option key='price' value='price'>price</option>
+                  <option key='description' value='description'>description</option>
+                  <option key='inventory' value='inventory'>inventory</option>
+                  <option key='image' value='image'>image</option>
+                </select>
+                <br />
+                <label className={styles.Label}>Update Value </label>
+                {(updateItem === 'description') ? <textarea type="text" id="updateDescription" name="updateDescription" onChange={handleUpdateDescriptionChange} required /> : null}
+                {(updateItem === 'name') ? <input type="text" id="updateName" name="updateName" onChange={handleUpdateNameChange} required /> : null}
+                {(updateItem === 'price') ? <input type="number" id="updatePrice" name="updatePrice" onChange={handleUpdatePriceChange} required /> : null}
+                {(updateItem === 'inventory') ? <input type="number" id="updateInventory" name="updateInventory" onChange={handleUpdateInventoryChange} required /> : null}
+                {(updateItem === 'image') ? <input className={styles.ImageButton} type="file" id="updateImage" name="updateImage" accept="image/jpeg, image/gif, image/png" onChange={handleUpdateImageChange} required /> : null}
+                <br />
+                <button className={styles.Submit} onClick={handleUpdateProduct}>Submit</button>
+              </form>
+            </div>
+          </div>
+        </dir>
       </body>
     </div>
   );
