@@ -4,6 +4,7 @@ import Home from "./index.js";
 import Product from "./product.js";
 import Admin from "./admin.js";
 import Login from "./login.js";
+import Register from "./register.js";
 import "../styles/globals.css";
 
 export default function App() {
@@ -91,6 +92,7 @@ export default function App() {
           <Route path="*" element={<Navigate to="/" />} />
           <Route exact path="/admin" element={<Admin />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
         </Routes>
       </Router>
     </>

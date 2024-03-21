@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import logo from './assets/logo.jpg';
 import styles from "../styles/Login.module.css";
 import Image from "next/image";
+import { Link } from 'react-router-dom';
 
 export default function Login() {
   const [userName, setUserName] = useState('');
@@ -89,7 +90,7 @@ export default function Login() {
           <br></br>
           <br></br>
           <button className={styles.Submit} onClick={handleLoginClick}>Login</button>
-          <button className={styles.Submit} onClick={handleRegisterClick}>Register</button>
+          <Link to={'/register'}><p className={styles.Register}>Click Here to Register</p></Link>
         </div>
       </body>
     </div>
