@@ -57,7 +57,6 @@ export default function Register() {
       <body className={styles.AppBody}>
         <p className={styles.Welcome}>Welcome, Guest!</p>
         <div>
-          <label className={styles.Error}>{error}</label>
           <br></br>
           <form>
             <label className={styles.Label}>Name</label>
