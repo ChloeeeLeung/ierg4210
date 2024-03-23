@@ -8,24 +8,13 @@ import Cart from './cart.js';
 
 export default function Home({ hierarchicalMenu, searchProduct, product }) {
   const location = useLocation();
+  const userName = localStorage.getItem("userName");
+  const extractedUserName = userName ? JSON.parse(userName)[0] : "Guest";
 
   const [categoryAll, setCategoryAll] = useState([]);
   const [productAll, setProductAll] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [cartProduct, setCartProduct] = useState([]);
-
-  // const searchProduct = async (category) => {
-  //   try {
-  //     const response = await fetch(`/api/product?cid=${category}`, { method: 'GET' });
-  //     if (!response.ok) {
-  //       throw new Error('Network response was not ok');
-  //     }
-  //     const data = await response.json();
-  //     setProductAll(data.productAll);
-  //   } catch (error) {
-  //     console.error('An error occurred:', error);
-  //   }
-  // };
 
   const handleScroll = () => {
     const scrollTop = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
@@ -107,7 +96,7 @@ export default function Home({ hierarchicalMenu, searchProduct, product }) {
       </header>
       <body className={styles.AppBody}>
         <div className={styles.Row}>
-          <p className={styles.Welcome}>Welcome Back, Guest</p>
+          <p className={styles.Welcome}>Welcome Back, {extractedUserName}</p>
           <Link to='/login'>
             <button className={styles.LoginButton}>
               Login

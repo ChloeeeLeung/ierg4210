@@ -5,12 +5,12 @@ import Image from "next/image";
 import { Link } from 'react-router-dom';
 
 export default function Login() {
-  const [userName, setUserName] = useState('');
+  const [userEmail, setUserEmail] = useState('');
   const [userPassword, setUserPassword] = useState('');
   const [error, setError] = useState('');
 
-  const handleUserNameChange = (event) => {
-    setUserName(event.target.value);
+  const handleUserEmailChange = (event) => {
+    setUserEmail(event.target.value);
   };
 
   const handleUserPasswordChange = (event) => {
@@ -20,7 +20,7 @@ export default function Login() {
   const bcrypt = require('bcryptjs'); // npm install bcryptjs
 
   const handleLoginClick = async () => {
-    const response = await fetch(`/api/login?email=${userName}`, { method: 'GET' });
+    const response = await fetch(`/api/login?email=${userEmail}`, { method: 'GET' });
     if (!response.ok) {
       throw new Error('Network response was not ok');
     }
@@ -28,11 +28,13 @@ export default function Login() {
     const data = await response.json();
     const storedPassword = data.password || '';
     const isAdmin = data.isAdmin || '';
+    const name = data.name || 'Guest';
+    localStorage.setItem("userName", JSON.stringify(name));
 
     if (storedPassword != '') {
       bcrypt.compare(userPassword, storedPassword[0], function(err, result) {
         if (result === true) {
-          if (isAdmin) {
+          if (isAdmin == 1) {
             window.location.href = '/admin';
           } else {
             window.location.href = '/';
@@ -56,7 +58,7 @@ export default function Login() {
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ userName, userPassword, hashedPassword, admin: true, salt }),
+            body: JSON.stringify({ userEmail, userPassword, hashedPassword, admin: true, salt }),
           });
 
           if (response.ok) {
@@ -83,7 +85,7 @@ export default function Login() {
           <label className={styles.Error}>{error}</label>
           <br></br>
           <label className={styles.Label}> Email </label>
-          <input type="text" id="userName" name="userName" value={userName} onChange={handleUserNameChange} required />
+          <input type="text" id="userEmail" name="userEmail" value={userEmail} onChange={handleUserEmailChange} required />
           <br></br>
           <label className={styles.Label}> Password </label>
           <input type="text" id="userPassword" name="userPassword" value={userPassword} onChange={handleUserPasswordChange} required />
