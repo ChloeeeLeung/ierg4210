@@ -48,31 +48,6 @@ export default function Login() {
     }
   };
 
-  const handleRegisterClick = () => {
-    bcrypt.genSalt(10, function(err, salt) {
-      bcrypt.hash(userPassword, salt, async function(err, hash) {
-        const hashedPassword = hash;
-        try {
-          const response = await fetch('/api/register', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ userEmail, userPassword, hashedPassword, admin: true, salt }),
-          });
-
-          if (response.ok) {
-            console.log('Register successfully!');
-          } else {
-            console.error('Error login:', response.statusText);
-          }
-        } catch (error) {
-          console.error('An error occurred:', error);
-        }
-      });
-    });
-  };
-
   return (
     <div className={styles.App}>
       <header className={styles.AppHeader}>

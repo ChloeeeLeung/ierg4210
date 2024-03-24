@@ -131,3 +131,11 @@
   border-color: white;
   width: 20vh;
 }
+
+.ChangePassword {
+  color: #3D2C2E;
+  font-size: small;
+  font-weight: 800;  
+  width: 10vh;
+  padding-left: 10px;
+}

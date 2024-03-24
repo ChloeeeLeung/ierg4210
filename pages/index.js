@@ -88,6 +88,10 @@ export default function Home({ hierarchicalMenu, searchProduct, product }) {
     setCartProduct(updatedCartProduct);
   };
 
+  const logoutClick = () => {
+    localStorage.removeItem("userName"); 
+  };
+
   return (
     <div className={styles.App}>
       <header className={styles.AppHeader}>
@@ -97,11 +101,18 @@ export default function Home({ hierarchicalMenu, searchProduct, product }) {
       <body className={styles.AppBody}>
         <div className={styles.Row}>
           <p className={styles.Welcome}>Welcome Back, {extractedUserName}</p>
-          <Link to='/login'>
-            <button className={styles.LoginButton}>
-              Login
-            </button>
-          </Link>
+          {extractedUserName == "Guest" ? (
+            <Link to='/login'>
+              <button className={styles.LoginButton}>Login</button>
+            </Link>
+          ) : (
+            <div className={styles.Row}>
+              <Link to='/login'>
+                <button className={styles.LoginButton} onClick={logoutClick}>Logout</button>
+              </Link>
+              <Link to={'/password'}><p className={styles.ChangePassword}>Change Password?</p></Link>
+            </div>
+          )}
         </div>
         <nav className={styles.ShoppingList}>
           <h6 className={styles.ShoppingList}>Shopping List</h6>
