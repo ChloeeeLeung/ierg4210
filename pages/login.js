@@ -3,6 +3,7 @@ import logo from './assets/logo.jpg';
 import styles from "../styles/Login.module.css";
 import Image from "next/image";
 import { Link } from 'react-router-dom';
+import { serialize } from 'cookie';
 
 export default function Login() {
   const [userEmail, setUserEmail] = useState('');
@@ -35,8 +36,9 @@ export default function Login() {
     } else {
       setError('')
     }
-
+    
     const response = await fetch(`/api/login?email=${userEmail}`, { method: 'GET' });
+
     if (!response.ok) {
       throw new Error('Network response was not ok');
     }
@@ -45,15 +47,40 @@ export default function Login() {
     const storedPassword = data.password || '';
     const isAdmin = data.isAdmin || '';
     const name = data.name || 'Guest';
-
-    if (storedPassword != '') {
-      bcrypt.compare(userPassword, storedPassword[0], function(err, result) {
+    
+    if (storedPassword !== '') {
+      bcrypt.compare(userPassword, storedPassword[0], async function (err, result) {
         if (result === true) {
           localStorage.setItem("userName", JSON.stringify(name));
-          if (isAdmin == 1) {
-            window.location.href = '/admin';
-          } else {
-            window.location.href = '/';
+
+          const cookieOptions = {
+            httpOnly: true,
+            secure: true,
+            expires: (isAdmin == 1) ? new Date(Date.now() + 3 * 24 * 60 * 60 * 1000) : 0,
+            path: '/', 
+          };
+          const authCookie = serialize('auth', storedPassword[0], cookieOptions);
+
+          try {
+            const cookieResponse = await fetch('/api/setCookie', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ cookie: authCookie }),
+            });
+
+            if (cookieResponse.ok) {
+              if (isAdmin == 1) {
+                window.location.href = '/admin';
+              } else {
+                window.location.href = '/';
+              }
+            } else {
+              console.error('Error setting cookie:', cookieResponse.statusText);
+            }
+          } catch (error) {
+            console.error('An error occurred while setting cookie:', error);
           }
         } else {
           setError('Wrong password. Please try again.');
