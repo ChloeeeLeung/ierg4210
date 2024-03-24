@@ -56,6 +56,7 @@ export default function Login() {
       </header>
       <body className={styles.AppBody}>
         <p className={styles.Welcome}>Welcome, Guest!</p>
+        <Link to={'/'}><p className={styles.Back}>Back to Home Page</p></Link>
         <div>
           <label className={styles.Error}>{error}</label>
           <br></br>
