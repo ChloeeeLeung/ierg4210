@@ -15,7 +15,14 @@ export default function Password() {
     setCurrentPassword(event.target.value);
   };
 
-  const handleValidateClick = async () => {
+  const handleValidateClick = async (e) => {
+    e.preventDefault();
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(userEmail)) {
+      setError('Please enter a valid email address.');
+      return;
+    }
+
     const response = await fetch(`/api/login?email=${userEmail}`, { method: 'GET' });
     if (!response.ok) {
       throw new Error('Network response was not ok');

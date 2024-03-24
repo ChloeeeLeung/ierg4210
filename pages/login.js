@@ -19,7 +19,23 @@ export default function Login() {
 
   const bcrypt = require('bcryptjs'); // npm install bcryptjs
 
-  const handleLoginClick = async () => {
+  const handleLoginClick = async (e) => {
+    if(userEmail == '' || userPassword == ''){
+      setError('Please fill in all the columns.')
+      return;
+    } else {
+      setError('')
+    } 
+
+    e.preventDefault();
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(userEmail)) {
+      setError('Please enter a valid email address.');
+      return;
+    } else {
+      setError('')
+    }
+
     const response = await fetch(`/api/login?email=${userEmail}`, { method: 'GET' });
     if (!response.ok) {
       throw new Error('Network response was not ok');
@@ -29,11 +45,11 @@ export default function Login() {
     const storedPassword = data.password || '';
     const isAdmin = data.isAdmin || '';
     const name = data.name || 'Guest';
-    localStorage.setItem("userName", JSON.stringify(name));
 
     if (storedPassword != '') {
       bcrypt.compare(userPassword, storedPassword[0], function(err, result) {
         if (result === true) {
+          localStorage.setItem("userName", JSON.stringify(name));
           if (isAdmin == 1) {
             window.location.href = '/admin';
           } else {

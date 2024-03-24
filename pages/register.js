@@ -2,11 +2,13 @@ import React, { useState } from "react";
 import logo from './assets/logo.jpg';
 import styles from "../styles/Login.module.css";
 import Image from "next/image";
+import { Link } from 'react-router-dom';
 
 export default function Register() {
   const [userName, setUserName] = useState('');
   const [userEmail, setUserEmail] = useState('');
   const [userPassword, setUserPassword] = useState('');
+  const [error, setError] = useState('');
 
   const handleUserNameChange = (event) => {
     setUserName(event.target.value);
@@ -22,7 +24,23 @@ export default function Register() {
 
   const bcrypt = require('bcryptjs');
 
-  const handleRegisterClick = async () => {
+  const handleRegisterClick = async (e) => {
+    if(userName == '' || userEmail == '' || userPassword == ''){
+      setError('Please fill in all the columns.')
+      return;
+    } else {
+      setError('')
+    }
+
+    e.preventDefault();
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(userEmail)) {
+      setError('Please enter a valid email address.');
+      return;
+    } else {
+      setError('')
+    }
+
     bcrypt.genSalt(10, function (err, salt) {
       bcrypt.hash(userPassword, salt, async function (err, hash) {
         const hashedPassword = hash;
@@ -56,7 +74,9 @@ export default function Register() {
       </header>
       <body className={styles.AppBody}>
         <p className={styles.Welcome}>Welcome, Guest!</p>
+        <Link to={'/'}><p className={styles.Back}>Back to Home Page</p></Link>
         <div>
+          <label className={styles.Error}>{error}</label>
           <br></br>
           <form>
             <label className={styles.Label}>Name</label>
