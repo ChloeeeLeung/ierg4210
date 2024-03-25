@@ -72,6 +72,7 @@ export default function Password() {
             });
 
             if (response.ok) {
+              fetch('/api/delCookie', { method: 'GET' });
               localStorage.removeItem("userName"); 
               window.location.href = '/';
             } else {

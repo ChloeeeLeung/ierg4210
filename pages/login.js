@@ -53,34 +53,33 @@ export default function Login() {
         if (result === true) {
           localStorage.setItem("userName", JSON.stringify(name));
 
-          const cookieOptions = {
-            httpOnly: true,
-            secure: true,
-            expires: (isAdmin == 1) ? new Date(Date.now() + 3 * 24 * 60 * 60 * 1000) : 0,
-            path: '/', 
-          };
-          const authCookie = serialize('auth', storedPassword[0], cookieOptions);
+          if(isAdmin == 1){
+            const cookieOptions = {
+              httpOnly: true,
+              secure: true,
+              expires: (isAdmin == 1) ? new Date(Date.now() + 3 * 24 * 60 * 60 * 1000) : 0,
+              path: '/', 
+            };
+            const authCookie = serialize('auth', storedPassword[0], cookieOptions);
+            try {
+              const cookieResponse = await fetch('/api/setCookie', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ cookie: authCookie }),
+              });
 
-          try {
-            const cookieResponse = await fetch('/api/setCookie', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({ cookie: authCookie }),
-            });
-
-            if (cookieResponse.ok) {
-              if (isAdmin == 1) {
-                window.location.href = '/admin';
+              if (cookieResponse.ok) {
+                  window.location.href = '/admin';
               } else {
-                window.location.href = '/';
+                console.error('Error setting cookie:', cookieResponse.statusText);
               }
-            } else {
-              console.error('Error setting cookie:', cookieResponse.statusText);
+            } catch (error) {
+              console.error('An error occurred while setting cookie:', error);
             }
-          } catch (error) {
-            console.error('An error occurred while setting cookie:', error);
+          } else {
+            window.location.href = '/';
           }
         } else {
           setError('Wrong password. Please try again.');

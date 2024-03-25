@@ -90,6 +90,7 @@ export default function Home({ hierarchicalMenu, searchProduct, product }) {
 
   const logoutClick = () => {
     localStorage.removeItem("userName"); 
+    fetch('/api/delCookie', { method: 'GET' });
   };
 
   return (

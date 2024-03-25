@@ -1,5 +1,6 @@
 import styles from "../styles/Admin.module.css";
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 export default function Admin() {
   const [newCategory, setNewCategory] = useState('');
@@ -242,6 +243,22 @@ export default function Admin() {
   const [productAll, setProductAll] = useState([]);
 
   useEffect(() => {
+    fetch('/api/readCookie')
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log(data.auth);
+        if(data.auth == false){
+          window.location.href = '/';
+        }
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+      });
     fetch('/api/category')
       .then((response) => {
         if (!response.ok) {
@@ -358,6 +375,8 @@ export default function Admin() {
       </header>
       <body className={styles.AppBody}>
         <dir>
+          <br></br>
+          <Link to={'/'}><p className={styles.Back}>Back to Home Page</p></Link>
           <br></br>
           <div className={styles.Row}>
             <div className={styles.Column}>
