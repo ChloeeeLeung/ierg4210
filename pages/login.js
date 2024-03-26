@@ -5,6 +5,7 @@ import Image from "next/image";
 import { Link } from 'react-router-dom';
 import { serialize } from 'cookie';
 import { generateNonce, validateNonce } from './nonceUtils';
+import { v4 as uuidv4 } from 'uuid';
 
 export default function Login() {
   const [userEmail, setUserEmail] = useState('');
@@ -69,10 +70,10 @@ export default function Login() {
             const cookieOptions = {
               httpOnly: true,
               secure: true,
-              expires: (isAdmin == 1) ? new Date(Date.now() + 3 * 24 * 60 * 60 * 1000) : 0,
+              expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
               path: '/', 
             };
-            const authCookie = serialize('auth', storedPassword[0], cookieOptions);
+            const authCookie = serialize('auth', uuidv4(), cookieOptions);
             try {
               const cookieResponse = await fetch('/api/setCookie', {
                 method: 'POST',
