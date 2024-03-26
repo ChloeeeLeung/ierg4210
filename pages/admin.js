@@ -35,7 +35,12 @@ export default function Admin() {
   };
 
   const handleUpdateDescriptionChange = (event) => {
-    setUpdateDescription(event.target.value);
+    const { value } = event.target;
+    const words = value.split(' ');
+
+    if (words.length <= 200) {
+      setUpdateDescription(value);
+    }
   };
 
   const handleUpdateNameChange = (event) => {
@@ -332,7 +337,12 @@ export default function Admin() {
     setProductInventory(event.target.value);
   };
   const handleProductDescription = (event) => {
-    setProductDescription(event.target.value);
+    const { value } = event.target;
+    const words = value.split(' ');
+
+    if (words.length <= 200) {
+      setProductDescription(value);
+    }
   };
 
   const handleProductImage = (event) => {
