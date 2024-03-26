@@ -1,6 +1,7 @@
 import styles from "../styles/Admin.module.css";
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { generateNonce, validateNonce } from './nonceUtils';
 
 export default function Admin() {
   const [newCategory, setNewCategory] = useState('');
@@ -15,6 +16,7 @@ export default function Admin() {
   const [updatePrice, setUpdatePrice] = useState('');
   const [updateInventory, setUpdateInventory] = useState('');
   const [updateImage, setUpdateImage] = useState('');
+  const [nonce, setNonce] = useState('');
 
   const handleOldCategoryChange = (event) => {
     setOldCategory(event.target.value);
@@ -61,6 +63,11 @@ export default function Admin() {
   };
 
   const handleDelCategoryClick = async () => {
+    const isValidNonce = validateNonce(nonce, storedNonces);
+    if (!isValidNonce) {
+      setError('Invalid nonce');
+      return;
+    }
     try {
       const response = await fetch('/api/delCategory', {
         method: 'POST',
@@ -81,6 +88,11 @@ export default function Admin() {
   };
 
   const handleUpdateCategory = async () => {
+    const isValidNonce = validateNonce(nonce, storedNonces);
+    if (!isValidNonce) {
+      setError('Invalid nonce');
+      return;
+    }
     try {
       const response = await fetch('/api/updateCategory', {
         method: 'POST',
@@ -101,6 +113,11 @@ export default function Admin() {
   };
 
   const handleUpdateProduct = async () => {
+    const isValidNonce = validateNonce(nonce, storedNonces);
+    if (!isValidNonce) {
+      setError('Invalid nonce');
+      return;
+    }
     if (updateItem === 'description') {
       try {
         const response = await fetch('/api/updateDescription', {
@@ -196,6 +213,11 @@ export default function Admin() {
   };
 
   const handleDelProductClick = async () => {
+    const isValidNonce = validateNonce(nonce, storedNonces);
+    if (!isValidNonce) {
+      setError('Invalid nonce');
+      return;
+    }
     try {
       const response = await fetch('/api/delProduct', {
         method: 'POST',
@@ -220,6 +242,11 @@ export default function Admin() {
   };
 
   const handleNewCategoryClick = async () => {
+    const isValidNonce = validateNonce(nonce, storedNonces);
+    if (!isValidNonce) {
+      setError('Invalid nonce');
+      return;
+    }
     try {
       const response = await fetch('/api/addCategory', {
         method: 'POST',
@@ -243,6 +270,7 @@ export default function Admin() {
   const [productAll, setProductAll] = useState([]);
 
   useEffect(() => {
+    setNonce(generateNonce());
     fetch('/api/readCookie')
       .then((response) => {
         if (!response.ok) {
@@ -349,6 +377,11 @@ export default function Admin() {
   };
 
   const handleNewProductClick = async () => {
+    const isValidNonce = validateNonce(nonce, storedNonces);
+    if (!isValidNonce) {
+      setError('Invalid nonce');
+      return;
+    }
     try {
       const response = await fetch('/api/addProduct', {
         method: 'POST',
@@ -368,6 +401,8 @@ export default function Admin() {
     }
   };
 
+  const storedNonces = [nonce]; 
+
   return (
     <div className={styles.App}>
       <header className={styles.AppHeader}>
@@ -385,6 +420,7 @@ export default function Admin() {
                 <label className={styles.Label}>Name </label>
                 <input type="text" id="newCategory" name="newCategory" value={newCategory} onChange={handleNewCategoryChange} required />
                 <br></br>
+                <input type="hidden" name="nonce" value={nonce} />
                 <button className={styles.Submit} onClick={handleNewCategoryClick}>Submit</button>
               </form>
             </div>
@@ -419,6 +455,7 @@ export default function Admin() {
                   </div>
                 </div>
                 <br></br>
+                <input type="hidden" name="nonce" value={nonce} />
                 <button className={styles.Submit} onClick={handleNewProductClick}>Submit</button>
               </form>
             </div>
@@ -435,6 +472,7 @@ export default function Admin() {
                   ))}
                 </select>
                 <br></br>
+                <input type="hidden" name="nonce" value={nonce} />
                 <button className={styles.Submit} onClick={handleDelCategoryClick}>Submit</button>
               </form>
             </div>
@@ -448,6 +486,7 @@ export default function Admin() {
                   ))}
                 </select>
                 <br></br>
+                <input type="hidden" name="nonce" value={nonce} />
                 <button className={styles.Submit} onClick={handleDelProductClick}>Submit</button>
               </form>
             </div>
@@ -467,6 +506,7 @@ export default function Admin() {
                 <label className={styles.Label}>Update Category Name</label>
                 <input type="text" id="updateCategory" name="updateCategory" value={updateCategory} onChange={handleUpdateCategoryChange} required />
                 <br></br>
+                <input type="hidden" name="nonce" value={nonce} />
                 <button className={styles.Submit} onClick={handleUpdateCategory}>Submit</button>
               </form>
             </div>
@@ -496,6 +536,7 @@ export default function Admin() {
                 {(updateItem === 'inventory') ? <input type="number" id="updateInventory" name="updateInventory" onChange={handleUpdateInventoryChange} required /> : null}
                 {(updateItem === 'image') ? <input className={styles.ImageButton} type="file" id="updateImage" name="updateImage" accept="image/jpeg, image/gif, image/png" onChange={handleUpdateImageChange} required /> : null}
                 <br />
+                <input type="hidden" name="nonce" value={nonce} />
                 <button className={styles.Submit} onClick={handleUpdateProduct}>Submit</button>
               </form>
             </div>

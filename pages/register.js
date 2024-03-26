@@ -1,14 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import logo from './assets/logo.jpg';
 import styles from "../styles/Login.module.css";
 import Image from "next/image";
 import { Link } from 'react-router-dom';
+import { generateNonce, validateNonce } from './nonceUtils';
 
 export default function Register() {
   const [userName, setUserName] = useState('');
   const [userEmail, setUserEmail] = useState('');
   const [userPassword, setUserPassword] = useState('');
   const [error, setError] = useState('');
+  const [nonce, setNonce] = useState('');
+
+  useEffect(() => {
+    setNonce(generateNonce());
+  }, []);
 
   const handleUserNameChange = (event) => {
     setUserName(event.target.value);
@@ -22,14 +28,12 @@ export default function Register() {
     setUserEmail(event.target.value);
   };
 
-  const bcrypt = require('bcryptjs');
-
   const handleRegisterClick = async (e) => {
-    if(userName == '' || userEmail == '' || userPassword == ''){
-      setError('Please fill in all the columns.')
+    if (userName === '' || userEmail === '' || userPassword === '') {
+      setError('Please fill in all the columns.');
       return;
     } else {
-      setError('')
+      setError('');
     }
 
     e.preventDefault();
@@ -38,9 +42,16 @@ export default function Register() {
       setError('Please enter a valid email address.');
       return;
     } else {
-      setError('')
+      setError('');
     }
 
+    const isValidNonce = validateNonce(nonce, storedNonces);
+    if (!isValidNonce) {
+      setError('Invalid nonce');
+      return;
+    }
+
+    const bcrypt = require('bcryptjs');
     bcrypt.genSalt(10, function (err, salt) {
       bcrypt.hash(userPassword, salt, async function (err, hash) {
         const hashedPassword = hash;
@@ -66,6 +77,8 @@ export default function Register() {
     });
   };
 
+  const storedNonces = [nonce]; 
+
   return (
     <div className={styles.App}>
       <header className={styles.AppHeader}>
@@ -74,7 +87,7 @@ export default function Register() {
       </header>
       <body className={styles.AppBody}>
         <p className={styles.Welcome}>Welcome, Guest!</p>
-        <Link to={'/'}><p className={styles.Back}>Back to Home Page</p></Link>
+        <Link href={'/'}><p className={styles.Back}>Back to Home Page</p></Link>
         <div>
           <label className={styles.Error}>{error}</label>
           <br></br>
@@ -89,6 +102,7 @@ export default function Register() {
             <input type="text" id="userPassword" name="userPassword" value={userPassword} onChange={handleUserPasswordChange} required />
             <br></br>
             <br></br>
+            <input type="hidden" name="nonce" value={nonce} />
             <button className={styles.Submit} onClick={handleRegisterClick}>Register</button>
           </form>
         </div>

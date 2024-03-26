@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import logo from './assets/logo.jpg';
 import styles from "../styles/Password.module.css";
 import Image from "next/image";
 import { Link } from 'react-router-dom';
+import { generateNonce, validateNonce } from './nonceUtils';
 
 export default function Password() {
   const [currentPassword, setCurrentPassword] = useState('');
@@ -10,6 +11,11 @@ export default function Password() {
   const [userEmail, setUserEmail] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [error, setError] = useState('');
+  const [nonce, setNonce] = useState('');
+
+  useEffect(() => {
+    setNonce(generateNonce());
+  }, []);
 
   const handleCurrentPasswordChange = (event) => {
     setCurrentPassword(event.target.value);
@@ -59,6 +65,11 @@ export default function Password() {
   const handleUpdateClick = async () => {
     if (currentPassword !== newPassword) {
       setError('');
+      const isValidNonce = validateNonce(nonce, storedNonces);
+      if (!isValidNonce) {
+        setError('Invalid nonce');
+        return;
+      }
       bcrypt.genSalt(10, function (err, salt) {
         bcrypt.hash(newPassword, salt, async function (err, hash) {
           const hashedPassword = hash;
@@ -87,6 +98,8 @@ export default function Password() {
       setError('The new password cannot be the same as the current password.');
     }
   };
+
+  const storedNonces = [nonce]; 
 
   return (
     <div className={styles.App}>
@@ -119,6 +132,7 @@ export default function Password() {
               <input type="text" id="newPassword" name="newPassword" value={newPassword} onChange={handleUserPasswordChange} required />
               <br />
               <br />
+              <input type="hidden" name="nonce" value={nonce} />
               <button className={styles.Submit} onClick={handleUpdateClick}>Update</button>
             </div>
           )}

@@ -1,14 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import logo from './assets/logo.jpg';
 import styles from "../styles/Login.module.css";
 import Image from "next/image";
 import { Link } from 'react-router-dom';
 import { serialize } from 'cookie';
+import { generateNonce, validateNonce } from './nonceUtils';
 
 export default function Login() {
   const [userEmail, setUserEmail] = useState('');
   const [userPassword, setUserPassword] = useState('');
   const [error, setError] = useState('');
+  const [nonce, setNonce] = useState('');
+
+  useEffect(() => {
+    setNonce(generateNonce());
+  }, []);
 
   const handleUserEmailChange = (event) => {
     setUserEmail(event.target.value);
@@ -22,10 +28,10 @@ export default function Login() {
 
   const handleLoginClick = async (e) => {
     if(userEmail == '' || userPassword == ''){
-      setError('Please fill in all the columns.')
+      setError('Please fill in all the columns.');
       return;
     } else {
-      setError('')
+      setError('');
     } 
 
     e.preventDefault();
@@ -34,9 +40,15 @@ export default function Login() {
       setError('Please enter a valid email address.');
       return;
     } else {
-      setError('')
+      setError('');
     }
-    
+
+    const isValidNonce = validateNonce(nonce, storedNonces);
+    if (!isValidNonce) {
+      setError('Invalid nonce');
+      return;
+    }
+    console.log(nonce);
     const response = await fetch(`/api/login?email=${userEmail}`, { method: 'GET' });
 
     if (!response.ok) {
@@ -90,6 +102,8 @@ export default function Login() {
     }
   };
 
+  const storedNonces = [nonce]; 
+
   return (
     <div className={styles.App}>
       <header className={styles.AppHeader}>
@@ -109,6 +123,7 @@ export default function Login() {
           <input type="text" id="userPassword" name="userPassword" value={userPassword} onChange={handleUserPasswordChange} required />
           <br></br>
           <br></br>
+          <input type="hidden" name="nonce" value={nonce} />
           <button className={styles.Submit} onClick={handleLoginClick}>Login</button>
           <Link to={'/register'}><p className={styles.Register}>Click Here to Register</p></Link>
         </div>
