@@ -3,7 +3,7 @@ import logo from './assets/logo.jpg';
 import styles from "../styles/Password.module.css";
 import Image from "next/image";
 import { Link } from 'react-router-dom';
-import { generateNonce, validateNonce } from './nonceUtils';
+import { generateNonce, validateNonce } from '../public/nonceUtils';
 
 export default function Password() {
   const [currentPassword, setCurrentPassword] = useState('');

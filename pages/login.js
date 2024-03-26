@@ -4,7 +4,7 @@ import styles from "../styles/Login.module.css";
 import Image from "next/image";
 import { Link } from 'react-router-dom';
 import { serialize } from 'cookie';
-import { generateNonce, validateNonce } from './nonceUtils';
+import { generateNonce, validateNonce } from '../public/nonceUtils';
 import { v4 as uuidv4 } from 'uuid';
 
 export default function Login() {

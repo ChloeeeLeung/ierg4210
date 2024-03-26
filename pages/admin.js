@@ -1,7 +1,7 @@
 import styles from "../styles/Admin.module.css";
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { generateNonce, validateNonce } from './nonceUtils';
+import { generateNonce, validateNonce } from '../public/nonceUtils';
 
 export default function Admin() {
   const [newCategory, setNewCategory] = useState('');
