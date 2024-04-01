@@ -6,6 +6,7 @@ export default function Cart({updateCart}) {
   const [productNames, setProductNames] = useState([]);
   const [productPrices, setProductPrices] = useState([]);
   const [totalAmount, setTotalAmount] = useState(0);
+  const [isPayPalScriptLoaded, setIsPayPalScriptLoaded] = useState(false);
 
   useEffect(() => {
     const fetchProductDetail = async () => {
@@ -42,6 +43,16 @@ export default function Cart({updateCart}) {
     fetchProductDetail();
   }, [updateCart]);
 
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = 'https://www.paypal.com/sdk/js?client-id=Ae1rSDiEdsuwu9Zi74SdXL7AOsmPgU8Yb55rAPJt_Oc5172xDlZzpRIn9Ixr37ijS6YbzYVG2k4O-F3I&components=buttons';
+    script.async = true;
+    script.onload = () => {
+      setIsPayPalScriptLoaded(true);
+    };
+    document.body.appendChild(script);
+  }, []);
+
   const handleQuantityChange = (event, index) => {
     const updatedCartList = [...cartList];
     updatedCartList[index].quantity = event.target.value;
@@ -64,6 +75,35 @@ export default function Cart({updateCart}) {
     setTotalAmount(total);
   };
 
+
+  useEffect(() => {
+  if (isPayPalScriptLoaded) {
+    paypal.Buttons({
+      // PayPal button configuration options
+      createOrder: function (data, actions) {
+       return actions.order.create({
+          purchase_units: [
+            {
+              amount: {
+                value: '10.00', // Set the total amount for the order
+              },
+            },
+          ],
+        });
+      },
+      onApprove: function (data, actions) {
+        // ... PayPal button configuration options
+      },
+      onCancel: function (data) {
+        // ... PayPal button configuration options
+      },
+      onError: function (err) {
+        // ... PayPal button configuration options
+      }
+    }).render('#paypal-button-container');
+  }
+}, [isPayPalScriptLoaded]);
+
   return (
     <div>
       {cartList.map((product, index) => (
@@ -81,7 +121,12 @@ export default function Cart({updateCart}) {
       ))}
       <hr className={styles.Line} />
       <h6 className={styles.LeftText}>Total: ${totalAmount}</h6>
-      <button className={styles.Checkout}>Checkout</button>
+      {isPayPalScriptLoaded && (
+        <div id="paypal-button-container" className={styles.Paypal}></div>
+      )}
+      {!isPayPalScriptLoaded && (
+        <button className={styles.Checkout}>Checkout</button>
+      )}
     </div>
   );
 }
