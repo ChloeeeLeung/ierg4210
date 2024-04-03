@@ -79,17 +79,22 @@ export default function Cart({updateCart}) {
   useEffect(() => {
   if (isPayPalScriptLoaded) {
     paypal.Buttons({
-      // PayPal button configuration options
-      createOrder: function (data, actions) {
-       return actions.order.create({
-          purchase_units: [
-            {
-              amount: {
-                value: '10.00', // Set the total amount for the order
-              },
-            },
-          ],
+      createOrder: async function (data, actions) {
+        const url = new URL('/api/getOrder', window.location.href);
+        url.searchParams.append('cartList', JSON.stringify(cartList));
+
+        const response = await fetch(url, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
         });
+
+        const orderDetails = await response.json();
+
+        console.log(orderDetails);
+        
+        return actions.order.create(orderDetails);
       },
       onApprove: function (data, actions) {
         // ... PayPal button configuration options
