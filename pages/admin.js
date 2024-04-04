@@ -17,6 +17,7 @@ export default function Admin() {
   const [updateInventory, setUpdateInventory] = useState('');
   const [updateImage, setUpdateImage] = useState('');
   const [nonce, setNonce] = useState('');
+  const [order, setOrder] = useState([]);
 
   const handleOldCategoryChange = (event) => {
     setOldCategory(event.target.value);
@@ -318,6 +319,19 @@ export default function Admin() {
       .catch((error) => {
         console.error('Error fetching data:', error);
       });
+    fetch('/api/order')
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setOrder(data.orders);
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+      });
   }, []);
 
   const [productName, setProductName] = useState('');
@@ -413,6 +427,8 @@ export default function Admin() {
 
   const storedNonces = [nonce]; 
 
+  console.log(order);
+
   return (
     <div className={styles.App}>
       <header className={styles.AppHeader}>
@@ -423,6 +439,45 @@ export default function Admin() {
           <br></br>
           <Link to={'/'}><p className={styles.Back}>Back to Home Page</p></Link>
           <br></br>
+          <table className={styles.Table}>
+            <tr>
+              <th>Invoice ID</th>
+              <th>Date</th>
+              <th>Status</th>
+              <th>User Name</th>
+              <th>Product</th>
+              <th>Total Amount</th>
+            </tr>
+            {order.map((order) => {
+              const orderDetails = JSON.parse(order.orderDetails);
+              const totalAmount = orderDetails.reduce((sum, item) => {
+                const quantity = parseInt(item.quantity);
+                const unitAmount = parseFloat(item.unit_amount.value);
+                return sum + quantity * unitAmount;
+              }, 0);
+
+              return (
+                <tr key={order.UUID}>
+                  <td>{order.UUID}</td>
+                  <td>{order.date}</td>
+                  <td>{order.status}</td>
+                  <td>{order.username}</td>
+                  <td>
+                    {Array.isArray(orderDetails) ? (
+                      orderDetails.map(item => (
+                        <p key={item.name}>
+                          {`${item.quantity} ${item.name}: $${item.unit_amount.value}`}
+                        </p>
+                      ))
+                    ) : (
+                      <p>No order details available.</p>
+                    )}
+                  </td>
+                  <td>{totalAmount.toFixed(2)}</td>
+                </tr>
+              );
+            })}
+          </table>
           <div className={styles.Row}>
             <div className={styles.Column}>
               <h5 className={styles.Title}>New Category</h5>
