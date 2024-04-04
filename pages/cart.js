@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styles from "../styles/Cart.module.css";
 
 export default function Cart({updateCart}) {
@@ -7,6 +7,16 @@ export default function Cart({updateCart}) {
   const [productPrices, setProductPrices] = useState([]);
   const [totalAmount, setTotalAmount] = useState(0);
   const [isPayPalScriptLoaded, setIsPayPalScriptLoaded] = useState(false);
+
+  const [dbUUID, setdbUUID] = useState('');
+  const dbUUIDRef = useRef(dbUUID); 
+  useEffect(() => {
+    dbUUIDRef.current = dbUUID;
+  }, [dbUUID]);
+
+
+  const userName = localStorage.getItem("userName")?.[0];
+  const UserName = userName? JSON.parse(userName) : 'Guest';
 
   useEffect(() => {
     const fetchProductDetail = async () => {
@@ -77,37 +87,58 @@ export default function Cart({updateCart}) {
 
 
   useEffect(() => {
-  if (isPayPalScriptLoaded) {
-    paypal.Buttons({
-      createOrder: async function (data, actions) {
-        const url = new URL('/api/getOrder', window.location.href);
-        url.searchParams.append('cartList', JSON.stringify(cartList));
+    if (isPayPalScriptLoaded) {
+      paypal.Buttons({
+        createOrder: async function (data, actions) {
+          const url = new URL('/api/getOrder', window.location.href);
+          url.searchParams.append('cartList', JSON.stringify(cartList));
+          url.searchParams.append('userName', UserName);
 
-        const response = await fetch(url, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
+          const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
 
-        const orderDetails = await response.json();
+          const orderDetails = await response.json();
+          const { purchase_units } = orderDetails;
 
-        console.log(orderDetails);
-        
-        return actions.order.create(orderDetails);
-      },
-      onApprove: function (data, actions) {
-        // ... PayPal button configuration options
-      },
-      onCancel: function (data) {
-        // ... PayPal button configuration options
-      },
-      onError: function (err) {
-        // ... PayPal button configuration options
-      }
-    }).render('#paypal-button-container');
-  }
-}, [isPayPalScriptLoaded]);
+          if (orderDetails && orderDetails.purchase_units && orderDetails.purchase_units.length > 0) {
+            const invoiceId = purchase_units[0].invoice_id;
+            setdbUUID(invoiceId);
+          } else {
+            console.log('No purchase units found.');
+          }
+
+          return actions.order.create(orderDetails);
+        },
+        onApprove: function (data, actions) {
+          return actions.order.capture().then(function(orderData) {
+            fetch('/api/saveOrder', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ orderData }),
+            });
+            localStorage.removeItem("cartProduct"); 
+            window.location.reload();
+          });
+        },
+        onCancel: function (data) {
+          console.log(dbUUIDRef.current);
+          fetch('/api/delOrder', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ order: dbUUIDRef.current }),
+          });
+        },
+      }).render('#paypal-button-container');
+    }
+  }, [isPayPalScriptLoaded]);
 
   return (
     <div>

@@ -4,8 +4,7 @@ import bcrypt from 'bcryptjs';
 
 export default async function handler(req, res) {
   try {
-    const { cartList } = req.query;
-    console.log(cartList);
+    const { cartList, userName } = req.query;
     const parsedCartList = JSON.parse(cartList);
 
     if (!Array.isArray(parsedCartList)) {
@@ -21,7 +20,7 @@ export default async function handler(req, res) {
       quantities.push(parsedCartList[i].quantity);
     }
 
-    const sql = 'SELECT * FROM realProducts WHERE pid = ?';
+    let sql = 'SELECT * FROM realProducts WHERE pid = ?';
 
     await Promise.all(
       parsedCartList.map(async (item) => {
@@ -64,9 +63,10 @@ export default async function handler(req, res) {
 
     const invoice_id = uuidv4();
 
+    let salt;
     const email = 'sb-xukaw30219907@business.example.com';
     const generateDigest = async () => {
-      const salt = await bcrypt.genSalt(10);
+      salt = await bcrypt.genSalt(10);
       const digest = await bcrypt.hash(`${items}, ${amount}, ${email}`, salt);
       return digest;
     };
@@ -81,6 +81,13 @@ export default async function handler(req, res) {
         invoice_id,
       },
     ];
+
+    sql = `INSERT INTO orders (UUID, username, digest, salt) VALUES(?,?,?,?)`;
+
+    db.run(sql, [invoice_id, userName, custom_id, salt],(err) => {
+        if (err) return console.error(err.message);
+      }
+    );
 
     res.status(200).json({ purchase_units });
   } catch (error) {
