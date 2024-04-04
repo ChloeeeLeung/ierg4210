@@ -12,9 +12,23 @@ export default function Login() {
   const [userPassword, setUserPassword] = useState('');
   const [error, setError] = useState('');
   const [nonce, setNonce] = useState('');
+  const [order, setOrder] = useState([]);
 
   useEffect(() => {
     setNonce(generateNonce());
+    fetch('/api/order')
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setOrder(data.orders);
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+      });
   }, []);
 
   const handleUserEmailChange = (event) => {
@@ -127,6 +141,45 @@ export default function Login() {
           <input type="hidden" name="nonce" value={nonce} />
           <button className={styles.Submit} onClick={handleLoginClick}>Login</button>
           <Link to={'/register'}><p className={styles.Register}>Click Here to Register</p></Link>
+
+          <table className={styles.Table}>
+            <tr>
+              <th>Invoice ID</th>
+              <th>Date</th>
+              <th>Status</th>
+              <th>User Name</th>
+              <th>Product</th>
+              <th>Total Amount</th>
+            </tr>
+            {order.slice(order.length-5, order.length).map((order) => {
+              const orderDetails = JSON.parse(order.orderDetails);
+              const totalAmount = orderDetails ? orderDetails.reduce((sum, item) => {
+                const quantity = parseInt(item.quantity);
+                const unitAmount = parseFloat(item.unit_amount.value);
+                return sum + quantity * unitAmount;
+              }, 0) : 0;
+              return (
+                <tr key={order.UUID}>
+                  <td>{order.UUID}</td>
+                  <td>{order.date}</td>
+                  <td>{order.status}</td>
+                  <td>{order.username}</td>
+                  <td>
+                    {Array.isArray(orderDetails) ? (
+                      orderDetails.map(item => (
+                        <p key={item.name}>
+                          {`${item.quantity} ${item.name}: $${item.unit_amount.value}`}
+                        </p>
+                      ))
+                    ) : (
+                      <p>No order details available.</p>
+                    )}
+                  </td>
+                  <td>{totalAmount.toFixed(2)}</td>
+                </tr>
+              );
+            })}
+          </table>
         </div>
       </body>
     </div>
