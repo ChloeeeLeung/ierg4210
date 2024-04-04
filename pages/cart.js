@@ -15,8 +15,8 @@ export default function Cart({updateCart}) {
   }, [dbUUID]);
 
 
-  const userName = localStorage.getItem("userName")?.[0];
-  const UserName = userName? JSON.parse(userName) : 'Guest';
+  const userName = localStorage.getItem("userName");
+  const UserName = userName? JSON.parse(userName)[0] : "Guest";
 
   useEffect(() => {
     const fetchProductDetail = async () => {
