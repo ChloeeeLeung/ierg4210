@@ -439,30 +439,31 @@ export default function Admin() {
           <br></br>
           <Link to={'/'}><p className={styles.Back}>Back to Home Page</p></Link>
           <br></br>
+          <h5 className={styles.TableTitle}>All Orders</h5>
           <table className={styles.Table}>
             <tr>
-              <th>Invoice ID</th>
-              <th>Date</th>
-              <th>Status</th>
-              <th>User Name</th>
-              <th>Product</th>
-              <th>Total Amount</th>
+              <th className={styles.Column}>Invoice ID</th>
+              <th className={styles.Column}>Date</th>
+              <th className={styles.Column}>Status</th>
+              <th className={styles.Column}>User Name</th>
+              <th className={styles.Column}>Product</th>
+              <th className={styles.Column}>Total Amount</th>
             </tr>
             {order.map((order) => {
               const orderDetails = JSON.parse(order.orderDetails);
-              const totalAmount = orderDetails.reduce((sum, item) => {
+              const totalAmount = orderDetails ? orderDetails.reduce((sum, item) => {
                 const quantity = parseInt(item.quantity);
                 const unitAmount = parseFloat(item.unit_amount.value);
                 return sum + quantity * unitAmount;
-              }, 0);
+              }, 0) : 0;
 
               return (
                 <tr key={order.UUID}>
-                  <td>{order.UUID}</td>
-                  <td>{order.date}</td>
-                  <td>{order.status}</td>
-                  <td>{order.username}</td>
-                  <td>
+                  <td className={styles.Detail}>{order.UUID}</td>
+                  <td className={styles.Detail}>{order.date}</td>
+                  <td className={styles.Detail}>{order.status}</td>
+                  <td className={styles.Detail}>{order.username}</td>
+                  <td className={styles.Detail}>
                     {Array.isArray(orderDetails) ? (
                       orderDetails.map(item => (
                         <p key={item.name}>
@@ -473,11 +474,12 @@ export default function Admin() {
                       <p>No order details available.</p>
                     )}
                   </td>
-                  <td>{totalAmount.toFixed(2)}</td>
+                  <td className={styles.Detail}>${totalAmount.toFixed(2)}</td>
                 </tr>
               );
             })}
           </table>
+          <br></br>
           <div className={styles.Row}>
             <div className={styles.Column}>
               <h5 className={styles.Title}>New Category</h5>

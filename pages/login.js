@@ -141,15 +141,16 @@ export default function Login() {
           <input type="hidden" name="nonce" value={nonce} />
           <button className={styles.Submit} onClick={handleLoginClick}>Login</button>
           <Link to={'/register'}><p className={styles.Register}>Click Here to Register</p></Link>
-
+          <br></br>
+          <h5 className={styles.TableTitle}>Most Recent Five Order</h5>
           <table className={styles.Table}>
             <tr>
-              <th>Invoice ID</th>
-              <th>Date</th>
-              <th>Status</th>
-              <th>User Name</th>
-              <th>Product</th>
-              <th>Total Amount</th>
+              <th className={styles.Title}>Invoice ID</th>
+              <th className={styles.Title}>Date Time</th>
+              <th className={styles.Title}>Payment Status</th>
+              <th className={styles.Title}>User Name</th>
+              <th className={styles.Title}>Product</th>
+              <th className={styles.Title}>Total Amount</th>
             </tr>
             {order.slice(order.length-5, order.length).map((order) => {
               const orderDetails = JSON.parse(order.orderDetails);
@@ -160,11 +161,11 @@ export default function Login() {
               }, 0) : 0;
               return (
                 <tr key={order.UUID}>
-                  <td>{order.UUID}</td>
-                  <td>{order.date}</td>
-                  <td>{order.status}</td>
-                  <td>{order.username}</td>
-                  <td>
+                  <td className={styles.Detail}>{order.UUID}</td>
+                  <td className={styles.Detail}>{order.date}</td>
+                  <td className={styles.Detail}>{order.status}</td>
+                  <td className={styles.Detail}>{order.username}</td>
+                  <td className={styles.Detail}>
                     {Array.isArray(orderDetails) ? (
                       orderDetails.map(item => (
                         <p key={item.name}>
@@ -175,11 +176,12 @@ export default function Login() {
                       <p>No order details available.</p>
                     )}
                   </td>
-                  <td>{totalAmount.toFixed(2)}</td>
+                  <td className={styles.Detail}>${totalAmount.toFixed(2)}</td>
                 </tr>
               );
             })}
           </table>
+          <br></br>
         </div>
       </body>
     </div>

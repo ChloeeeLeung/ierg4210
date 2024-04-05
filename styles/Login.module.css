@@ -76,3 +76,25 @@
     font-size: small;
     font-weight: 800;
 }
+
+.Title {
+    color: #3D2C2E;
+    font-size: small;
+}
+
+.Detail {
+    color: #3D2C2E;
+    font-size: small;
+    border: 1px solid #3D2C2E;
+}
+
+.Border {
+    border: 1px solid #3D2C2E;
+}
+
+.TableTitle {
+    color: #3D2C2E;
+    margin: 20px;
+    font-weight: bold;
+    text-decoration: underline;
+}
