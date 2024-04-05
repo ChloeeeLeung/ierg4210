@@ -90,8 +90,10 @@ export default function Cart({updateCart}) {
     if (isPayPalScriptLoaded) {
       paypal.Buttons({
         createOrder: async function (data, actions) {
+          const cartProduct = localStorage.getItem("cartProduct");
           const url = new URL('/api/getOrder', window.location.href);
-          url.searchParams.append('cartList', JSON.stringify(cartList));
+          url.searchParams.append('cartList', cartProduct);
+          // console.log(cartProduct);
           url.searchParams.append('userName', UserName);
 
           const response = await fetch(url, {
