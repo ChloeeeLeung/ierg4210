@@ -96,6 +96,10 @@ export default function Cart({updateCart}) {
           // console.log(cartProduct);
           url.searchParams.append('userName', UserName);
 
+          if(cartProduct.length === 0){
+            return
+          }
+
           const response = await fetch(url, {
             method: 'GET',
             headers: {
